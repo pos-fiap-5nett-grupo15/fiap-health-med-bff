@@ -11,4 +11,14 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Fiap.Health.Med.Bff.Application\Fiap.Health.Med.Bff.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Fiap.Health.Med.Infra">
+      <HintPath>..\..\dependecies\Fiap.Health.Med.Infra.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
