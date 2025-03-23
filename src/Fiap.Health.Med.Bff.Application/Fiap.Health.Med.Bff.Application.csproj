@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Fiap.Health.Med.Bff.CrossCutting\Fiap.Health.Med.Bff.CrossCutting.csproj" />
     <ProjectReference Include="..\Fiap.Health.Med.Bff.Infrastructure\Fiap.Health.Med.Bff.Infrastructure.Http.csproj" />
   </ItemGroup>
 
