@@ -11,6 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt-Core" Version="2.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Fiap.Health.Med.Bff.Infrastructure\Fiap.Health.Med.Bff.Infrastructure.Http.csproj" />
   </ItemGroup>
 

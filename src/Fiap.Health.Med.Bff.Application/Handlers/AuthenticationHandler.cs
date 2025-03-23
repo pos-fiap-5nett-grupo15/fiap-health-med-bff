@@ -9,10 +9,12 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
     internal class AuthenticationHandler : IAuthenticationHandler
     {
         IApiClient _apiClient;
+        ITokenHandler _tokenHandler;
 
-        public AuthenticationHandler(IApiClient apiClient)
+        public AuthenticationHandler(IApiClient apiClient, ITokenHandler tokenHandler)
         {
             _apiClient = apiClient;
+            _tokenHandler = tokenHandler;
         }
 
         public async Task<LoginResponseDTO> AuthenticateAsync(LoginRequestDTO requestData)
@@ -30,7 +32,21 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
 
             if (userSearchResponse.IsSuccessful && userSearchResponse.Data is not null)
             {
-
+                if (BCrypt.BCryptHelper.CheckPassword(requestData.Password, userSearchResponse.Data.HashPassword))
+                {
+                    var token = _tokenHandler.GenerateToken(userSearchResponse.Data);
+                    return new LoginResponseDTO()
+                    {
+                        AccessToken = token,
+                        Message = string.IsNullOrEmpty(token) ? "Unable to generate token" : string.Empty
+                    };
+                }
+                else
+                    return new LoginResponseDTO()
+                    {
+                        AccessToken = string.Empty,
+                        Message = "Invalid password"
+                    };
             }
             else
             {
@@ -40,14 +56,6 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
                     Message = "User not found"
                 };
             }
-            /* TO-DO:
-             *  Verificar o tipo de usuário(médico ou paciente)
-             *  Verificar se o usuário existe
-             *  Verificar a senha do usuário
-             *  Gerar o token
-             */
-
-            throw new NotImplementedException();
         }
     }
 }
