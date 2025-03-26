@@ -2,7 +2,7 @@
 {
     public class SecuritySettings
     {
-        public static string JwtSecurityKey = "2025Fiap_HealthMedAPI_Group15_H@ckat0n_S3cur1ty";
-        public static int JwtTokenExpiresMinutes = 5;
+        public required string JwtSecurityKey { get; set; }
+        public int JwtTokenExpiresMinutes { get; set; }
     }
 }

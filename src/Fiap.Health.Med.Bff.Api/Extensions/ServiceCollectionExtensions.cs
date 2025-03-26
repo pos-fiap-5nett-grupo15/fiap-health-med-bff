@@ -4,6 +4,7 @@ using Fiap.Health.Med.Bff.CrossCutting.Settings;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -12,13 +13,13 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection ConfigureServices(this IServiceCollection services)
+        public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddEndpointsApiExplorer();
             services.AddControllers();
             services.AddSwagger();
             services.AddHandlers();
-            services.AddAuthentication();
+            services.AddAuthentication(configuration);
             services.AddHealthChecks();
 
             return services;
@@ -70,8 +71,13 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
             services.AddScoped<IApiClient, ApiClientUtils>();
             return services;
         }
-        private static IServiceCollection AddAuthentication(this IServiceCollection services)
+        private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
+            var jwtSettings = configuration.GetRequiredSection("JwtSettings").Get<SecuritySettings>();
+
+            if (jwtSettings is null || string.IsNullOrEmpty(jwtSettings.JwtSecurityKey))
+                throw new ArgumentNullException(nameof(jwtSettings));
+
             services.AddAuthentication(auth =>
             {
                 auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -83,7 +89,7 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
                 bearer.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecuritySettings.JwtSecurityKey)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.JwtSecurityKey)),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
