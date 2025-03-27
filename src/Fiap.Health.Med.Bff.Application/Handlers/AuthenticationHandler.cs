@@ -1,11 +1,10 @@
 ﻿using Fiap.Health.Med.Bff.Application.DTOs.Auth;
+using Fiap.Health.Med.Bff.Application.DTOs.Auth.UserSearch;
 using Fiap.Health.Med.Bff.Application.Interfaces.Auth;
 using Fiap.Health.Med.Bff.CrossCutting.Settings;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces;
-using Fiap.Health.Med.Infra.DTOs.Auth;
 using Fiap.Health.Med.Infra.Enums;
 using Microsoft.Extensions.Options;
-using RestSharp;
 
 namespace Fiap.Health.Med.Bff.Application.Handlers
 {
@@ -32,7 +31,7 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
                 searcUserRequest = new PatientSearchByDocumentDTO() { Document = requestData.Username };
 
 #if DEBUG
-            var tempResp = new SearchUserResponseDTO()
+            var tempResp = new UserSearchResponseDTO()
             {
                 Username = requestData.Username,
                 HashPassword = BCrypt.BCryptHelper.HashPassword("teste123", BCrypt.BCryptHelper.GenerateSalt()),
