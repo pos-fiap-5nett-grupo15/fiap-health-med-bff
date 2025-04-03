@@ -1,10 +1,13 @@
-﻿using Fiap.Health.Med.Bff.Application.DTOs.Auth;
-using Fiap.Health.Med.Bff.Application.DTOs.Auth.UserSearch;
+﻿using Fiap.Health.Med.Bff.Application.Dtos.Auth.UserSearch;
 using Fiap.Health.Med.Bff.Application.Interfaces.Auth;
 using Fiap.Health.Med.Bff.CrossCutting.Settings;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces;
-using Fiap.Health.Med.Infra.Enums;
 using Microsoft.Extensions.Options;
+using BCrypt;
+using RestSharp;
+using Fiap.Health.Med.Bff.Application.DTOs.Auth.Authenticate;
+using Fiap.Health.Med.Bff.Application.Interfaces.Doctor;
+using Fiap.Health.Med.Bff.Application.Interfaces.Patient;
 
 namespace Fiap.Health.Med.Bff.Application.Handlers
 {
@@ -12,67 +15,45 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
     {
         private readonly IApiClient _apiClient;
         private readonly ITokenHandler _tokenHandler;
+        private readonly IDoctorHandler _doctorHandler;
+        private readonly IPatientHandler _patientHandler;
         private readonly ExternalServicesSettings _extenalApiSettings;
 
-        public AuthenticationHandler(IApiClient apiClient, ITokenHandler tokenHandler, IOptions<ExternalServicesSettings> extenalApiSettings)
+        public AuthenticationHandler(IApiClient apiClient, ITokenHandler tokenHandler, IDoctorHandler doctorHandler, IPatientHandler patientHandler, IOptions<ExternalServicesSettings> extenalApiSettings)
         {
             _apiClient = apiClient;
             _tokenHandler = tokenHandler;
+            _doctorHandler = doctorHandler;
+            _patientHandler = patientHandler;
             _extenalApiSettings = extenalApiSettings.Value;
         }
 
-        public async Task<LoginResponseDTO> AuthenticateAsync(LoginRequestDTO requestData)
+        public async Task<LoginResponseDto> AuthenticateAsync(LoginRequestDto requestData)
         {
-            object searcUserRequest;
+            UserSearchResponseDto? userSearchResponseDto;
 
             if (!string.IsNullOrEmpty(requestData.Uf))
-                searcUserRequest = new DoctorSearchByConcilDTO() { ConcilNumer = requestData.Username, Uf = requestData.Uf };
-            else
-                searcUserRequest = new PatientSearchByDocumentDTO() { Document = requestData.Username };
-
-#if DEBUG
-            var tempResp = new UserSearchResponseDTO()
             {
-                Username = requestData.Username,
-                HashPassword = BCrypt.BCryptHelper.HashPassword("teste123", BCrypt.BCryptHelper.GenerateSalt()),
-                UserType = string.IsNullOrEmpty(requestData.Uf) ? EUserType.Patient : EUserType.Doctor
-            };
-
-            if (BCrypt.BCryptHelper.CheckPassword(requestData.Password, tempResp.HashPassword))
-            {
-                var token = _tokenHandler.GenerateToken(tempResp);
-                return new LoginResponseDTO()
-                {
-                    AccessToken = token,
-                    Message = string.IsNullOrEmpty(token) ? "Unable to generate token" : string.Empty
-                };
+                userSearchResponseDto = await _doctorHandler.GetDoctorByConcilAsync(requestData.Uf, requestData.Username);
             }
             else
-                return new LoginResponseDTO()
-                {
-                    AccessToken = string.Empty,
-                    Message = "Invalid password"
-                };
-#else
-            var userSearchResponse = await _apiClient.ExecuteRequestAsync<SearchUserResponseDTO>(baseUrl: "",
-                                                                                                 requestMethod: Method.Post,
-                                                                                                 requestBody: searcUserRequest);
-
-
-
-            if (userSearchResponse.IsSuccessful && userSearchResponse.Data is not null)
             {
-                if (BCrypt.BCryptHelper.CheckPassword(requestData.Password, userSearchResponse.Data.HashPassword))
+                userSearchResponseDto = await _patientHandler.GetPatientByCpfAsync(requestData.Username);
+            }
+
+            if (userSearchResponseDto is not null)
+            {
+                if (BCryptHelper.CheckPassword(requestData.Password, userSearchResponseDto.HashPassword))
                 {
-                    var token = _tokenHandler.GenerateToken(userSearchResponse.Data);
-                    return new LoginResponseDTO()
+                    var token = _tokenHandler.GenerateToken(userSearchResponseDto);
+                    return new LoginResponseDto()
                     {
                         AccessToken = token,
                         Message = string.IsNullOrEmpty(token) ? "Unable to generate token" : string.Empty
                     };
                 }
                 else
-                    return new LoginResponseDTO()
+                    return new LoginResponseDto()
                     {
                         AccessToken = string.Empty,
                         Message = "Invalid password"
@@ -80,13 +61,12 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
             }
             else
             {
-                return new LoginResponseDTO()
+                return new LoginResponseDto()
                 {
                     AccessToken = string.Empty,
                     Message = "User not found"
                 };
             }
-#endif
         }
     }
 }

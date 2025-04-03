@@ -1,4 +1,4 @@
-﻿using Fiap.Health.Med.Bff.Application.DTOs.Auth.UserSearch;
+﻿using Fiap.Health.Med.Bff.Application.Dtos.Auth.UserSearch;
 using Fiap.Health.Med.Bff.Application.Interfaces.Auth;
 using Fiap.Health.Med.Bff.CrossCutting.Settings;
 using Microsoft.Extensions.Options;
@@ -18,9 +18,8 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
             _jwtSettings = jwtSettings.Value;
         }
 
-        public string GenerateToken(UserSearchResponseDTO userData)
+        public string GenerateToken(UserSearchResponseDto userData)
         {
-            //TO-DO: Armazenar e recuperar chave e o tempo de expiração(parameter store?)
             var securityKey = Encoding.ASCII.GetBytes(_jwtSettings.JwtSecurityKey);
             var tokenExpires = _jwtSettings.JwtTokenExpiresMinutes;
             var tokenHandler = new JwtSecurityTokenHandler();

@@ -1,9 +1,9 @@
-﻿using Fiap.Health.Med.Bff.Application.DTOs.Auth;
+﻿using Fiap.Health.Med.Bff.Application.DTOs.Auth.Authenticate;
 
 namespace Fiap.Health.Med.Bff.Application.Interfaces.Auth
 {
     public interface IAuthenticationHandler
     {
-        Task<LoginResponseDTO> AuthenticateAsync(LoginRequestDTO requestData);
+        Task<LoginResponseDto> AuthenticateAsync(LoginRequestDto requestData);
     }
 }

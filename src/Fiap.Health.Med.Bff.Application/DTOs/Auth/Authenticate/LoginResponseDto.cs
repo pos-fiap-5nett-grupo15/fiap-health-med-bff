@@ -1,6 +1,6 @@
-﻿namespace Fiap.Health.Med.Bff.Application.DTOs.Auth
+﻿namespace Fiap.Health.Med.Bff.Application.DTOs.Auth.Authenticate
 {
-    public class LoginResponseDTO
+    public class LoginResponseDto
     {
         public string? AccessToken { get; set; }
         public string? Message { get; set; }

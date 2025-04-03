@@ -1,5 +1,7 @@
 ﻿using Fiap.Health.Med.Bff.Application.Handlers;
 using Fiap.Health.Med.Bff.Application.Interfaces.Auth;
+using Fiap.Health.Med.Bff.Application.Interfaces.Doctor;
+using Fiap.Health.Med.Bff.Application.Interfaces.Patient;
 using Fiap.Health.Med.Bff.CrossCutting.Settings;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Utils;
@@ -69,6 +71,8 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
             services.AddScoped<IAuthenticationHandler, AuthenticationHandler>();
             services.AddScoped<ITokenHandler, Fiap.Health.Med.Bff.Application.Handlers.TokenHandler>();
             services.AddScoped<IApiClient, ApiClientUtils>();
+            services.AddScoped<IDoctorHandler, DoctorHandler>();
+            services.AddScoped<IPatientHandler, PatientHandler>();
             return services;
         }
         private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)

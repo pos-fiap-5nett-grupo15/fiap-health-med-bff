@@ -1,4 +1,4 @@
-﻿using Fiap.Health.Med.Bff.Application.DTOs.Auth;
+﻿using Fiap.Health.Med.Bff.Application.DTOs.Auth.Authenticate;
 using Fiap.Health.Med.Bff.Application.Interfaces.Auth;
 using Fiap.Health.Med.Infra.Api;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +9,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
     [AllowAnonymous]
     public class AuthController : BaseController
     {
-        IAuthenticationHandler _authenticationHandler;
+        private readonly IAuthenticationHandler _authenticationHandler;
 
         public AuthController(IAuthenticationHandler authenticationHandler)
         {
@@ -17,7 +17,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPost]
-        public async Task<IActionResult> AuthenticateUser(LoginRequestDTO requestData)
+        public async Task<IActionResult> AuthenticateUser(LoginRequestDto requestData)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
