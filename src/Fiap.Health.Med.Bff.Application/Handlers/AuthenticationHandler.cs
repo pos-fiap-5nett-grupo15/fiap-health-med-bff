@@ -1,13 +1,12 @@
-﻿using Fiap.Health.Med.Bff.Application.Dtos.Auth.UserSearch;
+﻿using BCrypt;
+using Fiap.Health.Med.Bff.Application.Dtos.Auth.UserSearch;
+using Fiap.Health.Med.Bff.Application.DTOs.Auth.Authenticate;
 using Fiap.Health.Med.Bff.Application.Interfaces.Auth;
+using Fiap.Health.Med.Bff.Application.Interfaces.Doctor;
+using Fiap.Health.Med.Bff.Application.Interfaces.Patient;
 using Fiap.Health.Med.Bff.CrossCutting.Settings;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces;
 using Microsoft.Extensions.Options;
-using BCrypt;
-using RestSharp;
-using Fiap.Health.Med.Bff.Application.DTOs.Auth.Authenticate;
-using Fiap.Health.Med.Bff.Application.Interfaces.Doctor;
-using Fiap.Health.Med.Bff.Application.Interfaces.Patient;
 
 namespace Fiap.Health.Med.Bff.Application.Handlers
 {
