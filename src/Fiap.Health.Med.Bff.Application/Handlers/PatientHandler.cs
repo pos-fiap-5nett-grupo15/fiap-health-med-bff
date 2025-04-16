@@ -1,4 +1,5 @@
 ﻿using Fiap.Health.Med.Bff.Application.Dtos.Auth.UserSearch;
+using Fiap.Health.Med.Bff.Application.DTOs.Common;
 using Fiap.Health.Med.Bff.Application.DTOs.Patient.Create;
 using Fiap.Health.Med.Bff.Application.Interfaces.Patient;
 using Fiap.Health.Med.Bff.CrossCutting.Settings;
@@ -19,13 +20,13 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
             _extenalApiSettings = extenalApiSettings.Value;
         }
 
-        public async Task<CreateNewPatientResponseDto> CreateNewPatientAsync(CreateNewPatientRequestDto requestData)
+        public async Task<HandlerResultDto> CreateNewPatientAsync(CreateNewPatientRequestDto requestData)
         {
             var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.GetEndpoint("Patient_CreateAsync"),
                                                               requestMethod: Method.Post,
                                                               requestBody: requestData);
 
-            return new CreateNewPatientResponseDto()
+            return new HandlerResultDto()
             {
                 StatusCode = result.StatusCode,
                 Success = result.IsSuccessful,

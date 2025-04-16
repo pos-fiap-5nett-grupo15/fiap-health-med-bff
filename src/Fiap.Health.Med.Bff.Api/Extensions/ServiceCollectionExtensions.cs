@@ -2,6 +2,7 @@
 using Fiap.Health.Med.Bff.Application.Interfaces.Auth;
 using Fiap.Health.Med.Bff.Application.Interfaces.Doctor;
 using Fiap.Health.Med.Bff.Application.Interfaces.Patient;
+using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
 using Fiap.Health.Med.Bff.CrossCutting.Settings;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Utils;
@@ -73,6 +74,7 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
             services.AddScoped<IApiClient, ApiClientUtils>();
             services.AddScoped<IDoctorHandler, DoctorHandler>();
             services.AddScoped<IPatientHandler, PatientHandler>();
+            services.AddScoped<IScheduleHandler, ScheduleHandler>();
             return services;
         }
         private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)

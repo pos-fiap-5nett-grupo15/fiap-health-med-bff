@@ -12,6 +12,12 @@
         public string GetEndpoint(string endpointKey)
         {
             var resource = Endpoints.FirstOrDefault(e => e.Name == endpointKey)?.Resource ?? throw new KeyNotFoundException(endpointKey);
+
+            if (BaseURL.EndsWith("/"))
+                BaseURL = BaseURL.TrimEnd('/');
+            if (resource.StartsWith("/"))
+                resource = resource.TrimStart('/');
+
             return $"{BaseURL}/{resource}";
         }
         public string GetResource(string resourceKey) => Endpoints.FirstOrDefault(e => e.Name == resourceKey)?.Resource ?? throw new KeyNotFoundException(resourceKey);

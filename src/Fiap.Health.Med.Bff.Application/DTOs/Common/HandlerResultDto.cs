@@ -2,7 +2,7 @@
 
 namespace Fiap.Health.Med.Bff.Application.DTOs.Common
 {
-    public class BaseResponseDto
+    public class HandlerResultDto
     {
         public bool Success { get; set; }
         public object? ResponseData { get; set; }
