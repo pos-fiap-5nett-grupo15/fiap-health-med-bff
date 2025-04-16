@@ -1,6 +1,5 @@
 using Fiap.Health.Med.Bff.Api.Extensions;
 using Fiap.Health.Med.Bff.CrossCutting.Settings;
-using Microsoft.Extensions.Options;
 
 internal class Program
 {

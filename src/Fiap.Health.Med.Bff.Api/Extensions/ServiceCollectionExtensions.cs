@@ -1,16 +1,21 @@
 ﻿using Fiap.Health.Med.Bff.Application.Handlers;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor;
 using Fiap.Health.Med.Bff.Application.Interfaces.Auth;
 using Fiap.Health.Med.Bff.Application.Interfaces.Doctor;
 using Fiap.Health.Med.Bff.Application.Interfaces.Patient;
 using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
+using Fiap.Health.Med.Bff.Application.Interfaces.Schedule.DeclineScheduleByDoctor;
 using Fiap.Health.Med.Bff.CrossCutting.Settings;
+using Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces;
+using Fiap.Health.Med.Bff.Infrastructure.Http.Services;
+using Fiap.Health.Med.Bff.Infrastructure.Http.Settings;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using TokenHandler = Fiap.Health.Med.Bff.Application.Handlers.TokenHandler;
 
 namespace Fiap.Health.Med.Bff.Api.Extensions
 {
@@ -21,9 +26,15 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
             services.AddEndpointsApiExplorer();
             services.AddControllers();
             services.AddSwagger();
+            services.AddHttpServices();
             services.AddHandlers();
             services.AddAuthentication(configuration);
             services.AddHealthChecks();
+
+            var scheduleServiceBaseUrl = configuration.GetSection("ServicesSettings:ScheduleService")[nameof(ScheduleServiceSettings.BaseURL)];
+            services.AddHttpClient<IHttpClientScheduleManagerAPI, HttpClientScheduleManagerAPI>()
+                .ConfigureHttpClient(
+                    x => x.BaseAddress = new Uri(scheduleServiceBaseUrl ?? throw new ArgumentNullException(nameof(scheduleServiceBaseUrl))));
 
             return services;
         }
@@ -67,16 +78,27 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
 
             return services;
         }
+
         private static IServiceCollection AddHandlers(this IServiceCollection services)
         {
-            services.AddScoped<IAuthenticationHandler, AuthenticationHandler>();
-            services.AddScoped<ITokenHandler, Fiap.Health.Med.Bff.Application.Handlers.TokenHandler>();
-            services.AddScoped<IApiClient, ApiClientUtils>();
-            services.AddScoped<IDoctorHandler, DoctorHandler>();
-            services.AddScoped<IPatientHandler, PatientHandler>();
-            services.AddScoped<IScheduleHandler, ScheduleHandler>();
+            services
+                .AddScoped<IAuthenticationHandler, AuthenticationHandler>()
+                .AddScoped<ITokenHandler, TokenHandler>()
+                .AddScoped<IApiClient, ApiClientUtils>()
+                .AddScoped<IDoctorHandler, DoctorHandler>()
+                .AddScoped<IPatientHandler, PatientHandler>()
+                .AddScoped<IScheduleHandler, ScheduleHandler>()
+                .AddScoped<IDeclineScheduleByDoctorHandler, DeclineScheduleByDoctorHandler>();
             return services;
         }
+
+        private static IServiceCollection AddHttpServices(this IServiceCollection services)
+        {
+            services
+                .AddScoped<IScheduleManagerService, ScheduleManagerService>();
+            return services;
+        }
+
         private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetRequiredSection("JwtSettings").Get<SecuritySettings>();

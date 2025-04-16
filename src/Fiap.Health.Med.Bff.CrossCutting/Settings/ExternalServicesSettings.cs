@@ -5,6 +5,7 @@
         public required ServiceSettings UserService { get; set; }
         public required ServiceSettings ScheduleService { get; set; }
     }
+
     public class ServiceSettings
     {
         public required string BaseURL { get; set; }
@@ -22,6 +23,7 @@
         }
         public string GetResource(string resourceKey) => Endpoints.FirstOrDefault(e => e.Name == resourceKey)?.Resource ?? throw new KeyNotFoundException(resourceKey);
     }
+
     public class EndpointSettings
     {
         public required string Name { get; set; }

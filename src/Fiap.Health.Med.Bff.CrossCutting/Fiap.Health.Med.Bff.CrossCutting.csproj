@@ -17,4 +17,8 @@
     <Folder Include="Extensions\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Fiap.Health.Med.Bff.Infrastructure\Fiap.Health.Med.Bff.Infrastructure.Http.csproj" />
+  </ItemGroup>
+
 </Project>
