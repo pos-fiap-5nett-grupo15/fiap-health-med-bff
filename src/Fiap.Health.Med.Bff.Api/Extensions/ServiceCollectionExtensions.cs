@@ -1,9 +1,11 @@
 ﻿using Fiap.Health.Med.Bff.Application.Handlers;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor;
 using Fiap.Health.Med.Bff.Application.Interfaces.Auth;
 using Fiap.Health.Med.Bff.Application.Interfaces.Doctor;
 using Fiap.Health.Med.Bff.Application.Interfaces.Patient;
 using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
+using Fiap.Health.Med.Bff.Application.Interfaces.Schedule.AcceptScheduleByDoctor;
 using Fiap.Health.Med.Bff.Application.Interfaces.Schedule.DeclineScheduleByDoctor;
 using Fiap.Health.Med.Bff.CrossCutting.Settings;
 using Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients;
@@ -88,7 +90,8 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
                 .AddScoped<IDoctorHandler, DoctorHandler>()
                 .AddScoped<IPatientHandler, PatientHandler>()
                 .AddScoped<IScheduleHandler, ScheduleHandler>()
-                .AddScoped<IDeclineScheduleByDoctorHandler, DeclineScheduleByDoctorHandler>();
+                .AddScoped<IDeclineScheduleByDoctorHandler, DeclineScheduleByDoctorHandler>()
+                .AddScoped<IAcceptScheduleByDoctorHandler, AcceptScheduleByDoctorHandler>();
             return services;
         }
 
