@@ -1,4 +1,6 @@
-﻿using Fiap.Health.Med.Bff.Application.DTOs.Common;
+using Fiap.Health.Med.Bff.Application.Common;
+using Fiap.Health.Med.Bff.Application.DTOs.Common;
+using Fiap.Health.Med.Bff.Application.DTOs.Common;
 using Fiap.Health.Med.Bff.Application.DTOs.Schedule;
 using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
 using Fiap.Health.Med.Bff.CrossCutting.Settings;

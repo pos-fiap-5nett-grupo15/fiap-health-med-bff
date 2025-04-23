@@ -1,4 +1,7 @@
 ﻿using Fiap.Health.Med.Bff.Application.DTOs.Schedule;
+using Fiap.Health.Med.Bff.Application.DTOs.Schedule.DeclineScheduleByDoctor;
+using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
+using Fiap.Health.Med.Bff.Application.Interfaces.Schedule.DeclineScheduleByDoctor;
 using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
 using Fiap.Health.Med.Infra.Api;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +11,14 @@ namespace Fiap.Health.Med.Bff.Api.Controller
     public class ScheduleController : BaseController
     {
         private readonly IScheduleHandler _scheduleHandler;
+        private readonly IDeclineScheduleByDoctorHandler _declineScheduleByDoctorHandler;
 
-        public ScheduleController(IScheduleHandler scheduleHandler)
+        public ScheduleController(
+            IScheduleHandler scheduleHandler,
+            IDeclineScheduleByDoctorHandler declineScheduleByDoctorHandler)
         {
             _scheduleHandler = scheduleHandler;
+            _declineScheduleByDoctorHandler = declineScheduleByDoctorHandler;
         }
 
         [HttpPut("{id}")]
@@ -35,6 +42,26 @@ namespace Fiap.Health.Med.Bff.Api.Controller
 
 
             return StatusCode((int)result.StatusCode, responseData);
+        }
+
+        [HttpPatch("{scheduleId}/decline/{doctorId}")]
+        public async Task<IActionResult> DeclineScheduleAsync(
+            [FromRoute] long scheduleId,
+            [FromRoute] int doctorId,
+            CancellationToken ct)
+        {
+            var request = new DeclineScheduleByDoctorHandlerRequest
+            {
+                ScheduleId = scheduleId,
+                DoctorId = doctorId,
+            };
+
+            var result = await _declineScheduleByDoctorHandler.HandlerAsync(request, ct);
+
+            if (result.IsSuccess)
+                return StatusCode((int)result.StatusCode);
+
+            return StatusCode((int)result.StatusCode, result);
         }
     }
 }
