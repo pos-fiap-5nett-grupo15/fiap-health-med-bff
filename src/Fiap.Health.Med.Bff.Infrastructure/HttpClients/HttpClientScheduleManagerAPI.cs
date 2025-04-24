@@ -32,6 +32,17 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients
             return response;
         }
 
+        public async Task<DeclineScheduleByIdHttpResponse?> AcceptScheduleByIdAsync(
+          string authorization,
+          long scheduleId,
+          int doctorId,
+          CancellationToken ct)
+        {
+            (var response, _) = await SendPatchAsync<DeclineScheduleByIdHttpResponse?>(null, $"api/Schedule/{scheduleId}/accept/{doctorId}", authorization, ct);
+
+            return response;
+        }
+
         #region Private and public methods:
         private async Task<(T?, HttpStatusCode statusCode)> SendGetAsync<T>(
             string resourceRoute,

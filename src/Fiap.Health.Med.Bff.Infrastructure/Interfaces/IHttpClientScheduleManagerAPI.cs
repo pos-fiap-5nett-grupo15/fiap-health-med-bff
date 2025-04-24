@@ -9,5 +9,10 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces
             long scheduleId,
             int doctorId,
             CancellationToken ct);
+        Task<DeclineScheduleByIdHttpResponse?> AcceptScheduleByIdAsync(
+          string authorization,
+          long scheduleId,
+          int doctorId,
+          CancellationToken ct);
     }
 }

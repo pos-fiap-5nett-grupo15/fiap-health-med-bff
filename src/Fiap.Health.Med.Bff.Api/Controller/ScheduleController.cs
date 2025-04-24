@@ -1,6 +1,8 @@
 ﻿using Fiap.Health.Med.Bff.Application.DTOs.Schedule;
+using Fiap.Health.Med.Bff.Application.DTOs.Schedule.AcceptScheduleByDoctor;
 using Fiap.Health.Med.Bff.Application.DTOs.Schedule.DeclineScheduleByDoctor;
 using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
+using Fiap.Health.Med.Bff.Application.Interfaces.Schedule.AcceptScheduleByDoctor;
 using Fiap.Health.Med.Bff.Application.Interfaces.Schedule.DeclineScheduleByDoctor;
 using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
 using Fiap.Health.Med.Infra.Api;
@@ -12,13 +14,16 @@ namespace Fiap.Health.Med.Bff.Api.Controller
     {
         private readonly IScheduleHandler _scheduleHandler;
         private readonly IDeclineScheduleByDoctorHandler _declineScheduleByDoctorHandler;
+        private readonly IAcceptScheduleByDoctorHandler _acceptScheduleByDoctorHandler;
 
         public ScheduleController(
             IScheduleHandler scheduleHandler,
-            IDeclineScheduleByDoctorHandler declineScheduleByDoctorHandler)
+            IDeclineScheduleByDoctorHandler declineScheduleByDoctorHandler,
+            IAcceptScheduleByDoctorHandler acceptScheduleByDoctorHandler)
         {
             _scheduleHandler = scheduleHandler;
             _declineScheduleByDoctorHandler = declineScheduleByDoctorHandler;
+            _acceptScheduleByDoctorHandler = acceptScheduleByDoctorHandler;
         }
 
         [HttpPut("{id}")]
@@ -57,6 +62,26 @@ namespace Fiap.Health.Med.Bff.Api.Controller
             };
 
             var result = await _declineScheduleByDoctorHandler.HandlerAsync(request, ct);
+
+            if (result.IsSuccess)
+                return StatusCode((int)result.StatusCode);
+
+            return StatusCode((int)result.StatusCode, result);
+        }
+
+        [HttpPatch("{scheduleId}/accept/{doctorId}")]
+        public async Task<IActionResult> AcceptScheduleAsync(
+            [FromRoute] long scheduleId,
+            [FromRoute] int doctorId,
+            CancellationToken ct)
+        {
+            var request = new AcceptScheduleByDoctorHandlerRequest
+            {
+                ScheduleId = scheduleId,
+                DoctorId = doctorId,
+            };
+
+            var result = await _acceptScheduleByDoctorHandler.HandlerAsync(request, ct);
 
             if (result.IsSuccess)
                 return StatusCode((int)result.StatusCode);
