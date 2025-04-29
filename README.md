@@ -1,3 +1,15 @@
+``` shell
+    docker build -f ./infrastructure/docker/api/Dockerfile -t schedule-app .
+```
+
+Ou se estiver na pasta de infra
+
+``` shell
+    docker build -f ../fiap-health-med-bff/infrastructure/docker/api/Dockerfile -t bff-app ../fiap-health-med-bff/
+```
+
+
+
 # Introduction 
 TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
 
