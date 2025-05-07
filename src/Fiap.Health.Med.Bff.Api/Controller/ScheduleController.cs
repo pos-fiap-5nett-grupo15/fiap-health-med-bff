@@ -1,9 +1,8 @@
 ﻿using Fiap.Health.Med.Bff.Application.DTOs.Schedule;
-using Fiap.Health.Med.Bff.Application.DTOs.Schedule.AcceptScheduleByDoctor;
-using Fiap.Health.Med.Bff.Application.DTOs.Schedule.DeclineScheduleByDoctor;
-using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
-using Fiap.Health.Med.Bff.Application.Interfaces.Schedule.AcceptScheduleByDoctor;
-using Fiap.Health.Med.Bff.Application.Interfaces.Schedule.DeclineScheduleByDoctor;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Models;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Models;
 using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
 using Fiap.Health.Med.Infra.Api;
 using Microsoft.AspNetCore.Mvc;

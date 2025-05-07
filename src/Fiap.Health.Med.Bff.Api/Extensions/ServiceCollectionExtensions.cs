@@ -1,18 +1,23 @@
 ﻿using Fiap.Health.Med.Bff.Application.Handlers;
+using Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById;
+using Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById.Models;
+using Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById.Validators;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Interfaces;
 using Fiap.Health.Med.Bff.Application.Interfaces.Auth;
 using Fiap.Health.Med.Bff.Application.Interfaces.Doctor;
 using Fiap.Health.Med.Bff.Application.Interfaces.Patient;
 using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
-using Fiap.Health.Med.Bff.Application.Interfaces.Schedule.AcceptScheduleByDoctor;
-using Fiap.Health.Med.Bff.Application.Interfaces.Schedule.DeclineScheduleByDoctor;
 using Fiap.Health.Med.Bff.CrossCutting.Settings;
 using Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Services;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Settings;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Utils;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -29,17 +34,32 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
             services.AddControllers();
             services.AddSwagger();
             services.AddHttpServices();
+            services.AddValidators();
             services.AddHandlers();
             services.AddAuthentication(configuration);
             services.AddHealthChecks();
+            services.AddHttpClientScheduleManagerAPI(configuration);
+            services.AddHttpClientUserManagerAPI(configuration);
 
+            return services;
+        }
+
+        private static void AddHttpClientScheduleManagerAPI(this IServiceCollection services, IConfiguration configuration)
+        {
             var scheduleServiceBaseUrl = configuration.GetSection("ServicesSettings:ScheduleService")[nameof(ScheduleServiceSettings.BaseURL)];
             services.AddHttpClient<IHttpClientScheduleManagerAPI, HttpClientScheduleManagerAPI>()
                 .ConfigureHttpClient(
                     x => x.BaseAddress = new Uri(scheduleServiceBaseUrl ?? throw new ArgumentNullException(nameof(scheduleServiceBaseUrl))));
-
-            return services;
         }
+
+        private static void AddHttpClientUserManagerAPI(this IServiceCollection services, IConfiguration configuration)
+        {
+            var userServiceBaseUrl = configuration.GetSection("ServicesSettings:UserService")[nameof(UserServiceSettings.BaseURL)];
+            services.AddHttpClient<IHttpClientUserManagerAPI, HttpClientUserManagerAPI>()
+                .ConfigureHttpClient(
+                    x => x.BaseAddress = new Uri(userServiceBaseUrl ?? throw new ArgumentNullException(nameof(userServiceBaseUrl))));
+        }
+
         private static IServiceCollection AddSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen();
@@ -62,19 +82,19 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
                     BearerFormat = "JWT"
                 });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
                 {
-                    new OpenApiSecurityScheme
                     {
-                        Reference = new OpenApiReference
+                        new OpenApiSecurityScheme
                         {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
                         },
-                    },
-                    Array.Empty<string>()
-                }
-            });
+                        Array.Empty<string>()
+                    }
+                });
                 c.EnableAnnotations();
             });
 
@@ -91,14 +111,23 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
                 .AddScoped<IPatientHandler, PatientHandler>()
                 .AddScoped<IScheduleHandler, ScheduleHandler>()
                 .AddScoped<IDeclineScheduleByDoctorHandler, DeclineScheduleByDoctorHandler>()
-                .AddScoped<IAcceptScheduleByDoctorHandler, AcceptScheduleByDoctorHandler>();
+                .AddScoped<IAcceptScheduleByDoctorHandler, AcceptScheduleByDoctorHandler>()
+                .AddScoped<IDeletePatientByIdHandler, DeletePatientByIdHandler>();
+            return services;
+        }
+
+        private static IServiceCollection AddValidators(this IServiceCollection services)
+        {
+            services
+                .AddSingleton<IValidator<DeletePatientByIdHandlerRequest>, DeletePatientByIdHandlerValidator>();
             return services;
         }
 
         private static IServiceCollection AddHttpServices(this IServiceCollection services)
         {
             services
-                .AddScoped<IScheduleManagerService, ScheduleManagerService>();
+                .AddScoped<IScheduleManagerService, ScheduleManagerService>()
+                .AddScoped<IUserManagerService, UserManagerService>();
             return services;
         }
 

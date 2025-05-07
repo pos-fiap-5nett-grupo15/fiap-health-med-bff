@@ -1,4 +1,4 @@
-﻿namespace Fiap.Health.Med.Bff.Application.DTOs.Schedule.DeclineScheduleByDoctor
+﻿namespace Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Models
 {
     public class DeclineScheduleByDoctorHandlerRequest
     {

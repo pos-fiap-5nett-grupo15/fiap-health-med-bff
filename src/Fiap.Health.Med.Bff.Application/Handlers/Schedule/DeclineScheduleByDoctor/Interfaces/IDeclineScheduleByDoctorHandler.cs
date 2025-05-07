@@ -1,8 +1,7 @@
 ﻿using Fiap.Health.Med.Bff.Application.Common;
-using Fiap.Health.Med.Bff.Application.DTOs.Common;
-using Fiap.Health.Med.Bff.Application.DTOs.Schedule.DeclineScheduleByDoctor;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Models;
 
-namespace Fiap.Health.Med.Bff.Application.Interfaces.Schedule.DeclineScheduleByDoctor
+namespace Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Interfaces
 {
     public interface IDeclineScheduleByDoctorHandler
     {
