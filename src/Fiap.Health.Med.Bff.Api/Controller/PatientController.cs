@@ -30,12 +30,12 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateNewDoctor(CreateNewPatientRequestDto requestData)
+        public async Task<IActionResult> CreateNewPatient(CreateNewPatientRequestDto requestData)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             if (await _patientHandler.GetPatientByCpfAsync(requestData.Document) is not null)
-                return BadRequest("Doctor already exists");
+                return BadRequest("Patient already exists");
 
             var result = await _patientHandler.CreateNewPatientAsync(requestData);
 
