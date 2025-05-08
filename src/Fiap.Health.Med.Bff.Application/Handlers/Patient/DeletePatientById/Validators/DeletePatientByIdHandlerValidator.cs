@@ -7,7 +7,7 @@ namespace Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById.Val
     {
         public DeletePatientByIdHandlerValidator()
         {
-            RuleFor(x => x.DoctorId)
+            RuleFor(x => x.PatientId)
                 .GreaterThan(0);
         }
     }
