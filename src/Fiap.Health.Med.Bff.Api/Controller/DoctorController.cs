@@ -17,7 +17,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
             _doctorHandler = doctorHandler;
         }
 
-        [HttpGet]
+        [HttpGet("list")]
         [Authorize]
         public async Task<IActionResult> GetAllDoctor()
         {

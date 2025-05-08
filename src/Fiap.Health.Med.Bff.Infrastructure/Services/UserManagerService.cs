@@ -34,5 +34,23 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.Services
 
             return new BaseServiceResponse { Success = true };
         }
+
+        public async Task<BaseServiceResponse> UpdatePatientByIdAsync(int patientId, UpdatePatientByIdHttpRequest requestBody, CancellationToken ct)
+        {
+            _logger.LogInformation($"Starting {nameof(UpdatePatientByIdAsync)}.");
+
+            if (await _userManagerAPI.UpdatePatientByIdAsync("authorization", patientId, requestBody, ct) is var result && result is null || result.IsSuccess is false)
+            {
+                return new BaseServiceResponse()
+                {
+                    Success = false,
+                    ErrorMessage = result?.Errors.FirstOrDefault() ?? $"{nameof(UpdatePatientByIdAsync)} - An error ocurred while communicate with User Manager API."
+                };
+            }
+
+            _logger.LogInformation($"{nameof(UpdatePatientByIdAsync)} finished.");
+
+            return new BaseServiceResponse { Success = true };
+        }
     }
 }

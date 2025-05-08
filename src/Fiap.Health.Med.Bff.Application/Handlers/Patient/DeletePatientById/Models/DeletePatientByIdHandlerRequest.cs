@@ -2,6 +2,6 @@
 {
     public class DeletePatientByIdHandlerRequest
     {
-        public int DoctorId { get; init; }
+        public int PatientId { get; init; }
     }
 }

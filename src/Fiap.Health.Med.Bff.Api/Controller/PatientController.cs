@@ -1,6 +1,8 @@
 ﻿using Fiap.Health.Med.Bff.Application.DTOs.Patient.Create;
 using Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById.Models;
+using Fiap.Health.Med.Bff.Application.Handlers.Patient.UpdatePatientById.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Patient.UpdatePatientById.Models;
 using Fiap.Health.Med.Bff.Application.Interfaces.Patient;
 using Fiap.Health.Med.Bff.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -14,13 +16,16 @@ namespace Fiap.Health.Med.Bff.Api.Controller
     {
         private readonly IPatientHandler _patientHandler;
         private readonly IDeletePatientByIdHandler _deletePatientByIdHandler;
+        private readonly IUpdatePatientByIdHandler _updatePatientByIdHandler;
 
         public PatientController(
             IPatientHandler patientHandler,
-            IDeletePatientByIdHandler deletePatientByIdHandler)
+            IDeletePatientByIdHandler deletePatientByIdHandler,
+            IUpdatePatientByIdHandler updatePatientByIdHandler)
         {
             _patientHandler = patientHandler;
             _deletePatientByIdHandler = deletePatientByIdHandler;
+            _updatePatientByIdHandler = updatePatientByIdHandler;
         }
 
         [HttpPost]
@@ -45,10 +50,37 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         {
             var request = new DeletePatientByIdHandlerRequest
             {
-                DoctorId = patientId
+                PatientId = patientId
             };
 
             var result = await _deletePatientByIdHandler.HandlerAsync(request, ct);
+
+            if (result.IsSuccess)
+                return StatusCode((int)result.StatusCode);
+
+            return StatusCode((int)result.StatusCode, result);
+        }
+
+        [HttpPut("{patientId}")]
+        //[Authorize(Roles = nameof(EUserType.Patient))] TODO: Descomentar antes de entregar a versão final
+        public async Task<IActionResult> UpdatePatientByIdAsync(
+            [FromRoute] int patientId,
+            [FromBody] UpdatePatientByIdRequestBody requestBody,
+            CancellationToken ct)
+        {
+            if (requestBody is null)
+                return BadRequest("A patient's information to update must be informed.");
+
+            var request = new UpdatePatientByIdHandlerRequest
+            {
+                PatientId = patientId,
+                Document = requestBody.Document,
+                Email = requestBody.Email,
+                Name = requestBody.Name,
+                Password = requestBody.Password
+            };
+
+            var result = await _updatePatientByIdHandler.HandlerAsync(request, ct);
 
             if (result.IsSuccess)
                 return StatusCode((int)result.StatusCode);

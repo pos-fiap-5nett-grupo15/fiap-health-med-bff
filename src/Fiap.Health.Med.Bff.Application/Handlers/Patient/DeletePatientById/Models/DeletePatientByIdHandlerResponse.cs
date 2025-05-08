@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById.Models
+﻿namespace Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById.Models
 {
-    internal class DeletePatientByIdHandlerResponse
-    {
-    }
+    public class DeletePatientByIdHandlerResponse { }
 }

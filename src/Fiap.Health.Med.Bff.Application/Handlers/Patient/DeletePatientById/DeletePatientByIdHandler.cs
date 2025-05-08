@@ -31,7 +31,7 @@ namespace Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById
             if (_validator.Validate(request) is var validationResult && validationResult.IsValid is false)
                 return Result.Fail(HttpStatusCode.BadRequest, validationResult.Errors?.FirstOrDefault()?.ErrorMessage ?? "Invalid request.");
 
-            if (await _userManagerService.DeletePatientByIdAsync(request.DoctorId, ct) is var result && result is null || !result.Success)
+            if (await _userManagerService.DeletePatientByIdAsync(request.PatientId, ct) is var result && result is null || !result.Success)
                 return Result.Fail(HttpStatusCode.UnprocessableContent, result.ErrorMessage);
 
             _logger.LogInformation($"{nameof(DeletePatientByIdHandler)} finished.");

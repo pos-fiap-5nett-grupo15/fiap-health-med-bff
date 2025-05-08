@@ -32,5 +32,27 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients
 
             return response;
         }
+
+        public async Task<UpdatePatientByIdHttpResponse?> UpdatePatientByIdAsync(
+            string authorization,
+            int patientId,
+            UpdatePatientByIdHttpRequest requestBody,
+            CancellationToken ct)
+        {
+            _logger.LogInformation($"Starting {nameof(UpdatePatientByIdAsync)}");
+
+            (var response, var statusCode) = await SendPutAsync<UpdatePatientByIdHttpResponse?>(requestBody, $"patient/{patientId}", authorization, ct);
+
+            _logger.LogInformation($"{nameof(UpdatePatientByIdAsync)} finished.");
+
+            if (statusCode is HttpStatusCode.OK ||
+                statusCode is HttpStatusCode.NoContent)
+                return new UpdatePatientByIdHttpResponse
+                {
+                    IsSuccess = true
+                };
+
+            return response;
+        }
     }
 }

@@ -79,7 +79,7 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients
 
                 _logger.LogDebug($"Going to send request to {_serviceName} resourse '{uri}': {requestBody}");
 
-                var httpResponse = await _httpClient.PatchAsync(uri, requestBody, ct);
+                var httpResponse = await _httpClient.PostAsync(uri, requestBody, ct);
 
                 var rawResponse = await httpResponse.Content.ReadAsStringAsync(ct);
 
@@ -125,6 +125,51 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients
                 _logger.LogDebug($"Going to send request to {_serviceName} resourse '{uri}': {requestBody}");
 
                 var httpResponse = await _httpClient.PatchAsync(uri, requestBody, ct);
+
+                var rawResponse = await httpResponse.Content.ReadAsStringAsync(ct);
+
+                _logger.LogDebug($"{_serviceName} returned status code ({httpResponse.StatusCode}): '{rawResponse}'.");
+
+                if (!string.IsNullOrWhiteSpace(rawResponse))
+                {
+                    return (JsonSerializer.Deserialize<T>(rawResponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }), httpResponse.StatusCode);
+                }
+
+                return (default, httpResponse.StatusCode);
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical(e, $"Exception while trying to send request: {e.GetType()} - {e.Message} - {e.StackTrace}.");
+                throw;
+            }
+            finally
+            {
+                _httpClient.DefaultRequestHeaders.Clear();
+                _httpClient.Dispose();
+            }
+        }
+
+        public async Task<(T?, HttpStatusCode statusCode)> SendPutAsync<T>(
+            object contentRequest,
+            string resourceRoute,
+            string authorization,
+            CancellationToken ct)
+        {
+            try
+            {
+                BuildHeader(authorization);
+                var uri = $"{_httpClient.BaseAddress}{resourceRoute}";
+
+                HttpContent? requestBody = null;
+                if (contentRequest is not null)
+                {
+                    requestBody = new StringContent(JsonSerializer.Serialize(contentRequest), Encoding.UTF8, "application/json");
+                }
+
+                _logger.LogDebug($"Going to send request to {_serviceName} resourse '{uri}': {requestBody}");
+
+                var httpResponse = await _httpClient.PutAsync(uri, requestBody, ct);
 
                 var rawResponse = await httpResponse.Content.ReadAsStringAsync(ct);
 
