@@ -23,7 +23,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
             return Ok("Teste");
         }
 
-        [HttpGet]
+        [HttpGet("list")]
         public async Task<IActionResult> GetAllDoctor()
         {
             if (!ModelState.IsValid)
