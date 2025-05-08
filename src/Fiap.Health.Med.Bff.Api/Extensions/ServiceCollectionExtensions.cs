@@ -3,6 +3,10 @@ using Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById;
 using Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById.Models;
 using Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById.Validators;
+using Fiap.Health.Med.Bff.Application.Handlers.Patient.UpdatePatientById;
+using Fiap.Health.Med.Bff.Application.Handlers.Patient.UpdatePatientById.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Patient.UpdatePatientById.Models;
+using Fiap.Health.Med.Bff.Application.Handlers.Patient.UpdatePatientById.Validators;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor;
@@ -112,14 +116,16 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
                 .AddScoped<IScheduleHandler, ScheduleHandler>()
                 .AddScoped<IDeclineScheduleByDoctorHandler, DeclineScheduleByDoctorHandler>()
                 .AddScoped<IAcceptScheduleByDoctorHandler, AcceptScheduleByDoctorHandler>()
-                .AddScoped<IDeletePatientByIdHandler, DeletePatientByIdHandler>();
+                .AddScoped<IDeletePatientByIdHandler, DeletePatientByIdHandler>()
+                .AddScoped<IUpdatePatientByIdHandler, UpdatePatientByIdHandler>();
             return services;
         }
 
         private static IServiceCollection AddValidators(this IServiceCollection services)
         {
             services
-                .AddSingleton<IValidator<DeletePatientByIdHandlerRequest>, DeletePatientByIdHandlerValidator>();
+                .AddSingleton<IValidator<DeletePatientByIdHandlerRequest>, DeletePatientByIdHandlerValidator>()
+                .AddSingleton<IValidator<UpdatePatientByIdHandlerRequest>, UpdatePatientByIdHandlerValidator>();
             return services;
         }
 
