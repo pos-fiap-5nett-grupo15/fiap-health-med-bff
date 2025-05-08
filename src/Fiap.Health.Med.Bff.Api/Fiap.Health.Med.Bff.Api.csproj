@@ -16,12 +16,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Fiap.Health.Med.Bff.Application\Fiap.Health.Med.Bff.Application.csproj" />
 		<ProjectReference Include="..\Fiap.Health.Med.Bff.CrossCutting\Fiap.Health.Med.Bff.CrossCutting.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="Fiap.Health.Med.Infra">
-			<HintPath>..\..\dependecies\Fiap.Health.Med.Infra.dll</HintPath>
-		</Reference>
+		<ProjectReference Include="..\Fiap.Health.Med.Bff.Domain\Fiap.Health.Med.Bff.Domain.csproj" />
 	</ItemGroup>
 
 </Project>

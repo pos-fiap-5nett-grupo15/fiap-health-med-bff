@@ -1,4 +1,4 @@
-﻿using Fiap.Health.Med.Infra.Enums;
+﻿using Fiap.Health.Med.Bff.Domain.Enums;
 
 namespace Fiap.Health.Med.Bff.Application.Dtos.Auth.UserSearch
 {

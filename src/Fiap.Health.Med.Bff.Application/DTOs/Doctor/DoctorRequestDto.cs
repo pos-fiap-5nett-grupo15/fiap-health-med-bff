@@ -1,4 +1,4 @@
-﻿using Fiap.Health.Med.Infra.Enums;
+﻿using Fiap.Health.Med.Bff.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Fiap.Health.Med.Bff.Application.DTOs.Doctor

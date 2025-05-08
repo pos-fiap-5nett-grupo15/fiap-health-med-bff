@@ -2,14 +2,15 @@
 using Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById.Models;
 using Fiap.Health.Med.Bff.Application.Interfaces.Patient;
-using Fiap.Health.Med.Infra.Api;
-using Fiap.Health.Med.Infra.Enums;
+using Fiap.Health.Med.Bff.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fiap.Health.Med.Bff.Api.Controller
 {
-    public class PatientController : BaseController
+    [ApiController]
+    [Route("[Controller]")]
+    public class PatientController : ControllerBase
     {
         private readonly IPatientHandler _patientHandler;
         private readonly IDeletePatientByIdHandler _deletePatientByIdHandler;
@@ -22,14 +23,8 @@ namespace Fiap.Health.Med.Bff.Api.Controller
             _deletePatientByIdHandler = deletePatientByIdHandler;
         }
 
-        [HttpGet]
-        [Authorize(Roles = nameof(EUserType.Patient))]
-        public IActionResult Test()
-        {
-            return Ok("Teste");
-        }
-
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateNewPatient(CreateNewPatientRequestDto requestData)
         {
             if (!ModelState.IsValid)
@@ -43,7 +38,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpDelete("{patientId}")]
-        //[Authorize(Roles = nameof(EUserType.Patient))] TODO: Descomentar antes de entregar a versão final
+        [Authorize(AuthenticationSchemes = nameof(EUserType.Patient))]
         public async Task<IActionResult> DeletePatientByIdAsync(
             [FromRoute] int patientId,
             CancellationToken ct)
