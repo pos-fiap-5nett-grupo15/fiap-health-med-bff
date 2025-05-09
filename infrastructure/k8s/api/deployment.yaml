@@ -19,16 +19,16 @@ spec:
       - name: bff
         image: PLACEHOLDER_CONTAINER_REGISTRY/PLACEHOLDER_IMAGE_REPOSITORY:PLACEHOLDER_TAG
         ports:
-        - containerPort: 8082
+        - containerPort: 8083
         env:
         - name: ASPNETCORE_URLS
-          value: "http://+:8082"
+          value: "http://+:8083"
         - name: ASPNETCORE_ENVIRONMENT
           value: "Development"
         - name: ServicesSettings__UserService__BaseURL
-          value: http://user-app:81
+          value: http://user-app:8092
         - name: ServicesSettings__ScheduleService__BaseURL
-          value: http://schedule-app:8090/
+          value: http://schedule-app:8091/
         - name: ConnectionStrings__DefaultConnection
           valueFrom:
             secretKeyRef:
@@ -51,5 +51,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8082
+      targetPort: 8083
   type: LoadBalancer
