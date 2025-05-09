@@ -1,7 +1,6 @@
-﻿using BCrypt;
-using Fiap.Health.Med.Bff.Application.Dtos.Auth.UserSearch;
+﻿using Fiap.Health.Med.Bff.Application.Dtos.Auth.UserSearch;
 using Fiap.Health.Med.Bff.Application.DTOs.Common;
-using Fiap.Health.Med.Bff.Application.DTOs.Doctor.Create;
+using Fiap.Health.Med.Bff.Application.DTOs.Doctor;
 using Fiap.Health.Med.Bff.Application.Interfaces.Doctor;
 using Fiap.Health.Med.Bff.CrossCutting.Settings;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces;
@@ -21,11 +20,56 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
             _extenalApiSettings = extenalApiSettings.Value;
         }
 
-        public async Task<HandlerResultDto> CreateNewDoctorAsync(CreateNewDoctorRequestDto requestData)
+        public async Task<HandlerResultDto> CreateNewDoctorAsync(DoctorRequestDto requestData)
         {
             var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.GetEndpoint("Doctor_CreateAsync"),
                                                               requestMethod: Method.Post,
                                                               requestBody: requestData);
+
+            return new HandlerResultDto()
+            {
+                StatusCode = result.StatusCode,
+                Success = result.IsSuccessful,
+                ResponseData = result.Content,
+                ErrorMessage = result.ErrorMessage
+            };
+        }
+
+        public async Task<HandlerResultDto?> DeleteDoctorAsync(int id)
+        {
+            var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.GetEndpoint("Doctor_DeleteAsync"),
+                                                                                                requestMethod: Method.Delete,
+                                                                                                resourceUrl: $"{id}");
+
+            return new HandlerResultDto()
+            {
+                StatusCode = result.StatusCode,
+                Success = result.IsSuccessful,
+                ResponseData = result.Content,
+                ErrorMessage = result.ErrorMessage
+            };
+        }
+
+        public async Task<HandlerResultDto?> GetAllDoctorAsync()
+        {
+            var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.GetEndpoint("Doctor_GetAllAsync"),
+                                                                                                 requestMethod: Method.Get,
+                                                                                                 resourceUrl: null);
+
+            return new HandlerResultDto()
+            {
+                StatusCode = result.StatusCode,
+                Success = result.IsSuccessful,
+                ResponseData = result.Content,
+                ErrorMessage = result.ErrorMessage
+            };
+        }
+
+        public async Task<HandlerResultDto?> GetByIdDoctor(int id)
+        {
+            var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.GetEndpoint("Doctor_GetOneAsync"),
+                                                                                                requestMethod: Method.Get,
+                                                                                                resourceUrl: $"{id}");
 
             return new HandlerResultDto()
             {
@@ -43,6 +87,21 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
                                                                                                  resourceUrl: $"{uf}/{crm}");
 
             return userSearchResponse.Data;
+        }
+
+        public async Task<HandlerResultDto> PutDoctorAsync(int id, DoctorRequestDto requestData)
+        {
+            var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.GetEndpoint("Doctor_PutAsync"),
+                                                                                                 requestMethod: Method.Put,
+                                                                                                 resourceUrl: $"{id}", requestData);
+
+            return new HandlerResultDto()
+            {
+                StatusCode = result.StatusCode,
+                Success = result.IsSuccessful,
+                ResponseData = result.Content,
+                ErrorMessage = result.ErrorMessage
+            };
         }
     }
 }

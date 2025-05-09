@@ -1,7 +1,7 @@
 ﻿using Fiap.Health.Med.Bff.Application.Common;
-using Fiap.Health.Med.Bff.Application.DTOs.Schedule.AcceptScheduleByDoctor;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Models;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor;
-using Fiap.Health.Med.Bff.Application.Interfaces.Schedule.AcceptScheduleByDoctor;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Services;
 using Microsoft.Extensions.Logging;
 using System.Net;

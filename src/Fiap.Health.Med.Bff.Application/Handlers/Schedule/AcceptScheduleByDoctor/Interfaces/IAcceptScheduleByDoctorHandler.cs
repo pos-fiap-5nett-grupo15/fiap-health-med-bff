@@ -1,7 +1,7 @@
 ﻿using Fiap.Health.Med.Bff.Application.Common;
-using Fiap.Health.Med.Bff.Application.DTOs.Schedule.AcceptScheduleByDoctor;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Models;
 
-namespace Fiap.Health.Med.Bff.Application.Interfaces.Schedule.AcceptScheduleByDoctor
+namespace Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Interfaces
 {
     public interface IAcceptScheduleByDoctorHandler
     {

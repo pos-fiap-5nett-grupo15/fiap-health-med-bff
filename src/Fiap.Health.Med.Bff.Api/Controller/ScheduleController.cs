@@ -1,16 +1,15 @@
 ﻿using Fiap.Health.Med.Bff.Application.DTOs.Schedule;
-using Fiap.Health.Med.Bff.Application.DTOs.Schedule.AcceptScheduleByDoctor;
-using Fiap.Health.Med.Bff.Application.DTOs.Schedule.DeclineScheduleByDoctor;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Models;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Models;
 using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
-using Fiap.Health.Med.Bff.Application.Interfaces.Schedule.AcceptScheduleByDoctor;
-using Fiap.Health.Med.Bff.Application.Interfaces.Schedule.DeclineScheduleByDoctor;
-using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
-using Fiap.Health.Med.Infra.Api;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fiap.Health.Med.Bff.Api.Controller
 {
-    public class ScheduleController : BaseController
+    public class ScheduleController : ControllerBase
     {
         private readonly IScheduleHandler _scheduleHandler;
         private readonly IDeclineScheduleByDoctorHandler _declineScheduleByDoctorHandler;
@@ -27,6 +26,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateSchedule(int id, [FromBody] UpdateScheduleRequestDto requestData)
         {
             if (!ModelState.IsValid)
@@ -70,6 +70,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPatch("{scheduleId}/accept/{doctorId}")]
+        [Authorize]
         public async Task<IActionResult> AcceptScheduleAsync(
             [FromRoute] long scheduleId,
             [FromRoute] int doctorId,

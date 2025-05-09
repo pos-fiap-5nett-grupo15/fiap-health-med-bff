@@ -1,4 +1,4 @@
-﻿namespace Fiap.Health.Med.Bff.Application.DTOs.Schedule.AcceptScheduleByDoctor
+﻿namespace Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Models
 {
     public class AcceptScheduleByDoctorHandlerRequest
     {

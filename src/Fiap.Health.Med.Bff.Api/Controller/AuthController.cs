@@ -1,13 +1,13 @@
 ﻿using Fiap.Health.Med.Bff.Application.DTOs.Auth.Authenticate;
 using Fiap.Health.Med.Bff.Application.Interfaces.Auth;
-using Fiap.Health.Med.Infra.Api;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fiap.Health.Med.Bff.Api.Controller
 {
-    [AllowAnonymous]
-    public class AuthController : BaseController
+    [ApiController]
+    [Route("[Controller]")]
+    public class AuthController : ControllerBase
     {
         private readonly IAuthenticationHandler _authenticationHandler;
 
@@ -17,6 +17,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> AuthenticateUser(LoginRequestDto requestData)
         {
             if (!ModelState.IsValid)
