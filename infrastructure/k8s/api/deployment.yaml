@@ -70,6 +70,6 @@ spec:
     app: bff
   ports:
     - protocol: TCP
-      port: 8092
+      port: 80
       targetPort: 8082
   type: LoadBalancer
