@@ -26,9 +26,9 @@ spec:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Development"
         - name: ServicesSettings__UserService__BaseURL
-          value: http://user-app:8092
+          value: http://user-app-service:8092
         - name: ServicesSettings__ScheduleService__BaseURL
-          value: http://schedule-app:8091/
+          value: http://schedule-app-service:8091/
         - name: ConnectionStrings__DefaultConnection
           valueFrom:
             secretKeyRef:
