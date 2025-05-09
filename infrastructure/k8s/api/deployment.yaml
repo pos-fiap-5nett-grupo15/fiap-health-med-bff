@@ -22,33 +22,13 @@ spec:
         - containerPort: 8082
         env:
         - name: ASPNETCORE_URLS
-          value: "http://+:8081"
+          value: "http://+:8082"
         - name: ASPNETCORE_ENVIRONMENT
           value: "Development"
         - name: ServicesSettings__UserService__BaseURL
           value: http://user-app:81
-        - name: ServicesSettings__UserService__Endpoints__0__Name
-          value: Doctor_GetOneByConcilAsync
-        - name: ServicesSettings__UserService__Endpoints__0__Resource
-          value: Doctor
-        - name: ServicesSettings__UserService__Endpoints__1__Name
-          value: Doctor_CreateAsync
-        - name: ServicesSettings__UserService__Endpoints__1__Resource
-          value: Doctor
-        - name: ServicesSettings__UserService__Endpoints__2__Name
-          value: Patient_GetOneByConcilAsync
-        - name: ServicesSettings__UserService__Endpoints__2__Resource
-          value: Patient
-        - name: ServicesSettings__UserService__Endpoints__3__Name
-          value: Patient_CreateAsync
-        - name: ServicesSettings__UserService__Endpoints__3__Resource
-          value: Patient/Document
         - name: ServicesSettings__ScheduleService__BaseURL
           value: http://schedule-app:8090/
-        - name: ServicesSettings__ScheduleService__Endpoints__0__Name
-          value: Schedule_UpdateAsync
-        - name: ServicesSettings__ScheduleService__Endpoints__0__Resource
-          value: api/Schedule
         - name: ConnectionStrings__DefaultConnection
           valueFrom:
             secretKeyRef:
