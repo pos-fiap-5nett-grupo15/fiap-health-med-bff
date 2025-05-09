@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bff
+  namespace: PLACEHOLDER_NAMESPACE
+  labels:
+    app: bff
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bff
+  template:
+    metadata:
+      labels:
+        app: bff
+    spec:
+      containers:
+      - name: bff
+        image: PLACEHOLDER_CONTAINER_REGISTRY/PLACEHOLDER_IMAGE_REPOSITORY:PLACEHOLDER_TAG
+        ports:
+        - containerPort: 8083
+        env:
+        - name: ASPNETCORE_URLS
+          value: "http://+:8083"
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"
+        - name: ServicesSettings__UserService__BaseURL
+          value: http://user-app-service:8092
+        - name: ServicesSettings__ScheduleService__BaseURL
+          value: http://schedule-app-service:8091/
+        - name: ConnectionStrings__DefaultConnection
+          valueFrom:
+            secretKeyRef:
+              name: db-connection
+              key: ConnectionStrings__DefaultConnection
+        - name: ConnectionStrings__DatabaseDllConnection
+          valueFrom:
+            secretKeyRef:
+              name: db-connection
+              key: ConnectionStrings__DatabaseDllConnection
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bff-service
+  namespace: PLACEHOLDER_NAMESPACE
+spec:
+  selector:
+    app: bff
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8083
+  type: LoadBalancer
