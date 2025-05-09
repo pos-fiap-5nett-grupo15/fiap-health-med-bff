@@ -1,13 +1,14 @@
 ﻿using Fiap.Health.Med.Bff.Application.DTOs.Doctor;
 using Fiap.Health.Med.Bff.Application.Interfaces.Doctor;
-using Fiap.Health.Med.Infra.Api;
-using Fiap.Health.Med.Infra.Enums;
+using Fiap.Health.Med.Bff.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fiap.Health.Med.Bff.Api.Controller
 {
-    public class DoctorController : BaseController
+    [ApiController]
+    [Route("[Controller]")]
+    public class DoctorController : ControllerBase
     {
         private readonly IDoctorHandler _doctorHandler;
 
@@ -16,14 +17,8 @@ namespace Fiap.Health.Med.Bff.Api.Controller
             _doctorHandler = doctorHandler;
         }
 
-        [HttpGet]
-        [Authorize(Roles = nameof(EUserType.Doctor))]
-        public IActionResult Test()
-        {
-            return Ok("Teste");
-        }
-
         [HttpGet("list")]
+        [Authorize]
         public async Task<IActionResult> GetAllDoctor()
         {
             if (!ModelState.IsValid)
@@ -35,6 +30,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetByIdDoctor(int id)
         {
             if (!ModelState.IsValid)
@@ -46,6 +42,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateNewDoctor(DoctorRequestDto requestData)
         {
             if (!ModelState.IsValid)
@@ -59,6 +56,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = nameof(EUserType.Doctor))]
         public async Task<IActionResult> PutDoctor(int id, DoctorRequestDto requestData)
         {
             if (!ModelState.IsValid)
@@ -73,6 +71,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = nameof(EUserType.Doctor))]
         public async Task<IActionResult> DeleteDoctor(int id)
         {
             if (!ModelState.IsValid)
