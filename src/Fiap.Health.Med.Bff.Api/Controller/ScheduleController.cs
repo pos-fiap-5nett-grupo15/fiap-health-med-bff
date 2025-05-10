@@ -4,7 +4,6 @@ using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Models;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Models;
-using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,24 +13,21 @@ namespace Fiap.Health.Med.Bff.Api.Controller
     [Route("[Controller]")]
     public class ScheduleController : ControllerBase
     {
-        private readonly IScheduleHandler _scheduleHandler;
         private readonly IDeclineScheduleByDoctorHandler _declineScheduleByDoctorHandler;
         private readonly IAcceptScheduleByDoctorHandler _acceptScheduleByDoctorHandler;
         private readonly IUpdateScheduleHandler _updateScheduleHandler;
 
         public ScheduleController(
-            IScheduleHandler scheduleHandler,
             IDeclineScheduleByDoctorHandler declineScheduleByDoctorHandler,
             IAcceptScheduleByDoctorHandler acceptScheduleByDoctorHandler,
             IUpdateScheduleHandler updateScheduleHandler)
         {
-            _scheduleHandler = scheduleHandler;
             _declineScheduleByDoctorHandler = declineScheduleByDoctorHandler;
             _acceptScheduleByDoctorHandler = acceptScheduleByDoctorHandler;
             _updateScheduleHandler = updateScheduleHandler;
         }
 
-        
+
 
         [HttpPut("{scheduleId}/{doctorId}")]
         [Authorize]
