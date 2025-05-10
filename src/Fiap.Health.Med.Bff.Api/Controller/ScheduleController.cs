@@ -43,7 +43,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
             return StatusCode((int)result.StatusCode, result);
         }
 
-        [HttpPut("{scheduleId}/{doctorId}")]
+        [HttpPut("{scheduleId}/doctor/{doctorId}/update")]
         [Authorize]
         public async Task<IActionResult> UpdateSchedule(long scheduleId, int doctorId, [FromBody] UpdateScheduleHandlerRequest requestData, CancellationToken ct)
         {
@@ -58,7 +58,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
             return StatusCode((int)result.StatusCode, result);
         }
 
-        [HttpPatch("{scheduleId}/decline/{doctorId}")]
+        [HttpPatch("{scheduleId}/doctor/{doctorId}/decline")]
         public async Task<IActionResult> DeclineScheduleAsync(
             [FromRoute] long scheduleId,
             [FromRoute] int doctorId,
@@ -78,7 +78,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
             return StatusCode((int)result.StatusCode, result);
         }
 
-        [HttpPatch("{scheduleId}/accept/{doctorId}")]
+        [HttpPatch("{scheduleId}/doctor/{doctorId}/accept")]
         [Authorize]
         public async Task<IActionResult> AcceptScheduleAsync(
             [FromRoute] long scheduleId,
