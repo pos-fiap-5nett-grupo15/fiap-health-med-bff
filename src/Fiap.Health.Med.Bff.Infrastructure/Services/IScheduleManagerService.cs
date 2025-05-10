@@ -4,7 +4,12 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.Services
 {
     public interface IScheduleManagerService
     {
+        Task<GetScheduleServiceResponse> GetScheduleByIdAsync(long scheduleId, CancellationToken ct);
+        Task<GetScheduleServiceResponse> GetSchedulesByDoctorIdAsync(int doctorId, CancellationToken ct);
+        Task<GetScheduleServiceResponse> GetSchedulesByPatientIdAsync(int patientId, CancellationToken ct);
+        Task<BaseServiceResponse> CreateScheduleAsync(int doctorId, DateTime scheduleTime, float price, CancellationToken ct);
         Task<BaseServiceResponse> DeclineScheduleByIdAsync(long scheduleId, int doctorId, CancellationToken ct);
         Task<BaseServiceResponse> AcceptScheduleByIdAsync(long scheduleId, int doctorId, CancellationToken ct);
+        Task<BaseServiceResponse> UpdateScheduleByIdAsync(long scheduleId, int doctorId, DateTime scheduleDate, float schedulePrice, CancellationToken ct);
     }
 }

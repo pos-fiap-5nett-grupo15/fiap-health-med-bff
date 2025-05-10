@@ -1,55 +1,122 @@
-﻿using Fiap.Health.Med.Bff.Application.DTOs.Schedule;
-using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Interfaces;
+﻿using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Models;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.CreateScheduleHandler.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.CreateScheduleHandler.Models;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Models;
-using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.GetSchedule.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fiap.Health.Med.Bff.Api.Controller
 {
+    [ApiController]
+    [Route("[Controller]")]
     public class ScheduleController : ControllerBase
     {
-        private readonly IScheduleHandler _scheduleHandler;
+        private readonly IGetScheduleByIdHandler _getScheduleByIdHandler;
+        private readonly IGetScheduleByDoctorIdHandler _getScheduleByDoctorIdHandler;
+        private readonly IGetScheduleByPatientIdHandler _getScheduleByPatientIdHandler;
+        private readonly ICreateScheduleHandler _createScheduleHandler;
+        private readonly IUpdateScheduleHandler _updateScheduleHandler;
         private readonly IDeclineScheduleByDoctorHandler _declineScheduleByDoctorHandler;
         private readonly IAcceptScheduleByDoctorHandler _acceptScheduleByDoctorHandler;
 
         public ScheduleController(
-            IScheduleHandler scheduleHandler,
+            IGetScheduleByIdHandler getScheduleByIdHandler,
+            IGetScheduleByDoctorIdHandler getScheduleByDoctorIdHandler,
+            IGetScheduleByPatientIdHandler getScheduleByPatientIdHandler,
+            ICreateScheduleHandler createScheduleHandler,
+            IUpdateScheduleHandler updateScheduleHandler,
             IDeclineScheduleByDoctorHandler declineScheduleByDoctorHandler,
             IAcceptScheduleByDoctorHandler acceptScheduleByDoctorHandler)
         {
-            _scheduleHandler = scheduleHandler;
+            _getScheduleByIdHandler = getScheduleByIdHandler;
+            _getScheduleByDoctorIdHandler = getScheduleByDoctorIdHandler;
+            _getScheduleByPatientIdHandler = getScheduleByPatientIdHandler;
+            _createScheduleHandler = createScheduleHandler;
+            _updateScheduleHandler = updateScheduleHandler;
             _declineScheduleByDoctorHandler = declineScheduleByDoctorHandler;
             _acceptScheduleByDoctorHandler = acceptScheduleByDoctorHandler;
         }
 
-        [HttpPut("{id}")]
-        [Authorize]
-        public async Task<IActionResult> UpdateSchedule(int id, [FromBody] UpdateScheduleRequestDto requestData)
+        [HttpGet("{scheduleId}")]
+        public async Task<IActionResult> GetById([FromRoute] long scheduleId, CancellationToken ct)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            else
-                requestData.Id = id;
+            var result = await _getScheduleByIdHandler.HandlerAsync(scheduleId, ct);
 
-            var result = await _scheduleHandler.UpdateScheduleAsync(requestData);
+            if (result.IsSuccess)
+            {
+                if (result.Data is null || result.Data.Schedules is null || result.Data.Schedules.Count() <= 0)
+                    return NotFound("Agendamento não encontrado");
+                else
+                    return StatusCode((int)result.StatusCode, result.Data.Schedules.FirstOrDefault());
+            }
 
-            object? responseData;
-
-            if (result.ResponseData is not null)
-                responseData = result.ResponseData;
-            else if (!string.IsNullOrEmpty(result.ErrorMessage))
-                responseData = result.ErrorMessage;
-            else
-                responseData = null;
-
-
-            return StatusCode((int)result.StatusCode, responseData);
+            return StatusCode((int)result.StatusCode, result);
         }
 
-        [HttpPatch("{scheduleId}/decline/{doctorId}")]
+        [HttpGet("doctor/{doctorId}")]
+        public async Task<IActionResult> GetByDoctorId([FromRoute] int doctorId, CancellationToken ct)
+        {
+            var result = await _getScheduleByDoctorIdHandler.HandlerAsync(doctorId, ct);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data is null || result.Data.Schedules is null || result.Data.Schedules.Count() <= 0)
+                    return NotFound("Nenhum agendamento não encontrado");
+                else
+                    return StatusCode((int)result.StatusCode, result.Data.Schedules);
+            }
+
+            return StatusCode((int)result.StatusCode, result);
+        }
+
+        [HttpGet("patient/{patientId}")]
+        public async Task<IActionResult> GetByPatientId([FromRoute] int patientId, CancellationToken ct)
+        {
+            var result = await _getScheduleByPatientIdHandler.HandlerAsync(patientId, ct);
+
+            if (result.IsSuccess)
+            {
+                if (result.Data is null || result.Data.Schedules is null || result.Data.Schedules.Count() <= 0)
+                    return NotFound("Nenhum agendamento não encontrado");
+                else
+                    return StatusCode((int)result.StatusCode, result.Data.Schedules);
+            }
+
+            return StatusCode((int)result.StatusCode, result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateSchedule([FromBody] CreateScheduleHandlerRequest requestData, CancellationToken ct)
+        {
+            var result = await _createScheduleHandler.HandlerAsync(requestData, ct);
+
+            if (result.IsSuccess)
+                return StatusCode((int)result.StatusCode);
+
+            return StatusCode((int)result.StatusCode, result);
+        }
+
+        [HttpPut("{scheduleId}/doctor/{doctorId}/update")]
+        [Authorize]
+        public async Task<IActionResult> UpdateSchedule(long scheduleId, int doctorId, [FromBody] UpdateScheduleHandlerRequest requestData, CancellationToken ct)
+        {
+            requestData.ScheduleId = scheduleId;
+            requestData.DoctorId = doctorId;
+
+            var result = await _updateScheduleHandler.HandlerAsync(requestData, ct);
+
+            if (result.IsSuccess)
+                return StatusCode((int)result.StatusCode);
+
+            return StatusCode((int)result.StatusCode, result);
+        }
+
+        [HttpPatch("{scheduleId}/doctor/{doctorId}/decline")]
         public async Task<IActionResult> DeclineScheduleAsync(
             [FromRoute] long scheduleId,
             [FromRoute] int doctorId,
@@ -69,7 +136,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
             return StatusCode((int)result.StatusCode, result);
         }
 
-        [HttpPatch("{scheduleId}/accept/{doctorId}")]
+        [HttpPatch("{scheduleId}/doctor/{doctorId}/accept")]
         [Authorize]
         public async Task<IActionResult> AcceptScheduleAsync(
             [FromRoute] long scheduleId,

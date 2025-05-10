@@ -23,7 +23,7 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients
 
             _logger.LogInformation($"{nameof(DeletePatientByIdAsync)} finished.");
 
-            if (statusCode is HttpStatusCode.OK || 
+            if (statusCode is HttpStatusCode.OK ||
                 statusCode is HttpStatusCode.NoContent)
                 return new DeletePatientByIdHttpResponse
                 {
@@ -41,7 +41,7 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients
         {
             _logger.LogInformation($"Starting {nameof(UpdatePatientByIdAsync)}");
 
-            (var response, var statusCode) = await SendPutAsync<UpdatePatientByIdHttpResponse?>(requestBody, $"patient/{patientId}", authorization, ct);
+            (var response, var statusCode, _) = await SendPutAsync<UpdatePatientByIdHttpResponse?>(requestBody, $"patient/{patientId}", authorization, ct);
 
             _logger.LogInformation($"{nameof(UpdatePatientByIdAsync)} finished.");
 
