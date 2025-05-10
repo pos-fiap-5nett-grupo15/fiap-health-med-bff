@@ -9,7 +9,6 @@ namespace Fiap.Health.Med.Bff.Application.Interfaces.Doctor
         Task<HandlerResultDto> CreateNewDoctorAsync(DoctorRequestDto requestData);
         Task<HandlerResultDto?> PutDoctorAsync(int id, DoctorRequestDto requestData);
         Task<HandlerResultDto?> DeleteDoctorAsync(int id);
-        Task<HandlerResultDto?> GetAllDoctorAsync();
         Task<HandlerResultDto?> GetByIdDoctor(int id);
         Task<UserSearchResponseDto?> GetDoctorByConcilAsync(string uf, int crm);
     }

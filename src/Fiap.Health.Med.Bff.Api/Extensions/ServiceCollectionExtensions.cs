@@ -1,4 +1,8 @@
 ﻿using Fiap.Health.Med.Bff.Application.Handlers;
+using Fiap.Health.Med.Bff.Application.Handlers.Doctor.GetDoctorsByFilters;
+using Fiap.Health.Med.Bff.Application.Handlers.Doctor.GetDoctorsByFilters.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Doctor.GetDoctorsByFilters.Models;
+using Fiap.Health.Med.Bff.Application.Handlers.Doctor.GetDoctorsByFilters.Validators;
 using Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById;
 using Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Patient.DeletePatientById.Models;
@@ -75,14 +79,13 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
 
         private static IServiceCollection AddSwagger(this IServiceCollection services)
         {
-            services.AddSwaggerGen();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Health Med API",
+                    Title = "FIAP Health & Med - BFF API",
                     Version = "v1",
-                    Description = "Heath Med API - FIAP Students Project - Group 15"
+                    Description = "FIAP Health & Med: BFF API - FIAP Students Project - Group 15"
                 });
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -130,7 +133,8 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
                 .AddScoped<ICreateScheduleHandler, CreateScheduleHandler>()
                 .AddScoped<IGetScheduleByIdHandler, GetScheduleByIdHandler>()
                 .AddScoped<IGetScheduleByDoctorIdHandler, GetScheduleByDoctorIdHandler>()
-                .AddScoped<IGetScheduleByPatientIdHandler, GetScheduleByPatientIdHandler>();
+                .AddScoped<IGetScheduleByPatientIdHandler, GetScheduleByPatientIdHandler>()
+                .AddScoped<IGetDoctorsByFiltersHandler, GetDoctorsByFiltersHandler>();
             return services;
         }
 
@@ -140,7 +144,8 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
                 .AddSingleton<IValidator<DeletePatientByIdHandlerRequest>, DeletePatientByIdHandlerValidator>()
                 .AddSingleton<IValidator<UpdatePatientByIdHandlerRequest>, UpdatePatientByIdHandlerValidator>()
                 .AddSingleton<IValidator<UpdateScheduleHandlerRequest>, UpdateScheduleHandlerValidator>()
-                .AddSingleton<IValidator<CreateScheduleHandlerRequest>, CreateScheduleHandlerValidator>();
+                .AddSingleton<IValidator<CreateScheduleHandlerRequest>, CreateScheduleHandlerValidator>()
+                .AddSingleton<IValidator<GetDoctorsByFiltersHandlerRequest>, GetDoctorsByFiltersHandlerValidator>();
             return services;
         }
 

@@ -1,4 +1,4 @@
-﻿namespace Fiap.Health.Med.Bff.Domain.Enums
+namespace Fiap.Health.Med.Bff.Domain.Enums
 {
     public enum EMedicalSpecialty
     {

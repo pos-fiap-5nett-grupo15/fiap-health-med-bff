@@ -11,7 +11,6 @@ internal class Program
         builder.Services.Configure<SecuritySettings>(builder.Configuration.GetSection("JwtSettings"));
 
         var app = builder.Build();
-        app.MapHealthChecks("/health");
 
         if (app.Environment.IsDevelopment())
         {
@@ -19,6 +18,7 @@ internal class Program
             app.UseSwaggerUI();
         }
 
+        app.MapHealthChecks("/health");
         app.UseCors();
         app.UseHttpsRedirection();
         app.UseAuthorization();
