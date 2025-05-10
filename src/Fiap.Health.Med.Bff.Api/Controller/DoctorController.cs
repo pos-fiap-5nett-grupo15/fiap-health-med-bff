@@ -42,7 +42,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPost]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateNewDoctor(DoctorRequestDto requestData)
         {
             if (!ModelState.IsValid)
