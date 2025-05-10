@@ -15,6 +15,8 @@ using Fiap.Health.Med.Bff.Application.Handlers.Schedule.CreateScheduleHandler.Mo
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.CreateScheduleHandler.Validators;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.GetSchedule;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.GetSchedule.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Models;
@@ -125,7 +127,10 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
                 .AddScoped<IDeletePatientByIdHandler, DeletePatientByIdHandler>()
                 .AddScoped<IUpdatePatientByIdHandler, UpdatePatientByIdHandler>()
                 .AddScoped<IUpdateScheduleHandler, UpdateScheduleHandler>()
-                .AddScoped<ICreateScheduleHandler, CreateScheduleHandler>();
+                .AddScoped<ICreateScheduleHandler, CreateScheduleHandler>()
+                .AddScoped<IGetScheduleByIdHandler, GetScheduleByIdHandler>()
+                .AddScoped<IGetScheduleByDoctorIdHandler, GetScheduleByDoctorIdHandler>()
+                .AddScoped<IGetScheduleByPatientIdHandler, GetScheduleByPatientIdHandler>();
             return services;
         }
 

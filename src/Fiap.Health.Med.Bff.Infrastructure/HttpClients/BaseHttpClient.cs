@@ -22,7 +22,7 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients
             _serviceName = serviceName;
         }
 
-        public async Task<(T?, HttpStatusCode statusCode)> SendGetAsync<T>(
+        public async Task<(T?, HttpStatusCode statusCode, string rawResponse)> SendGetAsync<T>(
             string resourceRoute,
             string authorization,
             CancellationToken ct)
@@ -42,10 +42,17 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients
 
                 if (!string.IsNullOrWhiteSpace(rawResponse))
                 {
-                    return (JsonSerializer.Deserialize<T>(rawResponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }), httpResponse.StatusCode);
+                    try
+                    {
+                        return (JsonSerializer.Deserialize<T>(rawResponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }), httpResponse.StatusCode, rawResponse);
+                    }
+                    catch (JsonException e)
+                    {
+                        return (default, httpResponse.StatusCode, rawResponse);
+                    }
                 }
 
-                return (default, httpResponse.StatusCode);
+                return (default, httpResponse.StatusCode, rawResponse);
 
             }
             catch (Exception e)
