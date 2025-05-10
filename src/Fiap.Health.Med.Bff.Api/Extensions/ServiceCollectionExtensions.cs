@@ -11,6 +11,10 @@ using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Models;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Validators;
 using Fiap.Health.Med.Bff.Application.Interfaces.Auth;
 using Fiap.Health.Med.Bff.Application.Interfaces.Doctor;
 using Fiap.Health.Med.Bff.Application.Interfaces.Patient;
@@ -117,7 +121,8 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
                 .AddScoped<IDeclineScheduleByDoctorHandler, DeclineScheduleByDoctorHandler>()
                 .AddScoped<IAcceptScheduleByDoctorHandler, AcceptScheduleByDoctorHandler>()
                 .AddScoped<IDeletePatientByIdHandler, DeletePatientByIdHandler>()
-                .AddScoped<IUpdatePatientByIdHandler, UpdatePatientByIdHandler>();
+                .AddScoped<IUpdatePatientByIdHandler, UpdatePatientByIdHandler>()
+                .AddScoped<IUpdateScheduleHandler, UpdateScheduleHandler>();
             return services;
         }
 
@@ -125,7 +130,8 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
         {
             services
                 .AddSingleton<IValidator<DeletePatientByIdHandlerRequest>, DeletePatientByIdHandlerValidator>()
-                .AddSingleton<IValidator<UpdatePatientByIdHandlerRequest>, UpdatePatientByIdHandlerValidator>();
+                .AddSingleton<IValidator<UpdatePatientByIdHandlerRequest>, UpdatePatientByIdHandlerValidator>()
+                .AddSingleton<IValidator<UpdateScheduleHandlerRequest>, UpdateScheduleHandlerValidator>();
             return services;
         }
 

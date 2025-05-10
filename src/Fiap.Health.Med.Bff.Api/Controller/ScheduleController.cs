@@ -1,52 +1,51 @@
-﻿using Fiap.Health.Med.Bff.Application.DTOs.Schedule;
-using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Interfaces;
+﻿using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Models;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Models;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Models;
 using Fiap.Health.Med.Bff.Application.Interfaces.Schedule;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fiap.Health.Med.Bff.Api.Controller
 {
+    [ApiController]
+    [Route("[Controller]")]
     public class ScheduleController : ControllerBase
     {
         private readonly IScheduleHandler _scheduleHandler;
         private readonly IDeclineScheduleByDoctorHandler _declineScheduleByDoctorHandler;
         private readonly IAcceptScheduleByDoctorHandler _acceptScheduleByDoctorHandler;
+        private readonly IUpdateScheduleHandler _updateScheduleHandler;
 
         public ScheduleController(
             IScheduleHandler scheduleHandler,
             IDeclineScheduleByDoctorHandler declineScheduleByDoctorHandler,
-            IAcceptScheduleByDoctorHandler acceptScheduleByDoctorHandler)
+            IAcceptScheduleByDoctorHandler acceptScheduleByDoctorHandler,
+            IUpdateScheduleHandler updateScheduleHandler)
         {
             _scheduleHandler = scheduleHandler;
             _declineScheduleByDoctorHandler = declineScheduleByDoctorHandler;
             _acceptScheduleByDoctorHandler = acceptScheduleByDoctorHandler;
+            _updateScheduleHandler = updateScheduleHandler;
         }
 
-        [HttpPut("{id}")]
+        
+
+        [HttpPut("{scheduleId}/{doctorId}")]
         [Authorize]
-        public async Task<IActionResult> UpdateSchedule(int id, [FromBody] UpdateScheduleRequestDto requestData)
+        public async Task<IActionResult> UpdateSchedule(long scheduleId, int doctorId, [FromBody] UpdateScheduleHandlerRequest requestData, CancellationToken ct)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            else
-                requestData.Id = id;
+            requestData.ScheduleId = scheduleId;
+            requestData.DoctorId = doctorId;
 
-            var result = await _scheduleHandler.UpdateScheduleAsync(requestData);
+            var result = await _updateScheduleHandler.HandlerAsync(requestData, ct);
 
-            object? responseData;
+            if (result.IsSuccess)
+                return StatusCode((int)result.StatusCode);
 
-            if (result.ResponseData is not null)
-                responseData = result.ResponseData;
-            else if (!string.IsNullOrEmpty(result.ErrorMessage))
-                responseData = result.ErrorMessage;
-            else
-                responseData = null;
-
-
-            return StatusCode((int)result.StatusCode, responseData);
+            return StatusCode((int)result.StatusCode, result);
         }
 
         [HttpPatch("{scheduleId}/decline/{doctorId}")]

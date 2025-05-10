@@ -4,6 +4,13 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces
 {
     public interface IHttpClientScheduleManagerAPI
     {
+        Task<UpdateScheduleHttpResponse?> UpdateScheduleByIdAsync(
+            string authorization,
+            long scheduleId,
+            int doctorId,
+            DateTime scheduleDate,
+            float schedulePrice,
+            CancellationToken ct);
         Task<DeclineScheduleByIdHttpResponse?> DeclineScheduleByIdAsync(
             string authorization,
             long scheduleId,
