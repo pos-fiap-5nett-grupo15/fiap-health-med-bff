@@ -11,16 +11,16 @@ namespace Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule
     public class UpdateScheduleHandler : IUpdateScheduleHandler
     {
         private readonly ILogger<UpdateScheduleHandler> _logger;
-        private readonly IScheduleManagerService _scheduleHandler;
+        private readonly IScheduleManagerService _scheduleService;
         private readonly IValidator<UpdateScheduleHandlerRequest> _validator;
 
         public UpdateScheduleHandler(
             ILogger<UpdateScheduleHandler> logger,
-            IScheduleManagerService scheduleHandler,
+            IScheduleManagerService scheduleService,
             IValidator<UpdateScheduleHandlerRequest> validator)
         {
             _logger = logger;
-            _scheduleHandler = scheduleHandler;
+            _scheduleService = scheduleService;
             _validator = validator;
         }
 
@@ -31,7 +31,7 @@ namespace Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule
             if (_validator.Validate(request) is var validationResult && !validationResult.IsValid)
                 return Result.Fail(HttpStatusCode.BadRequest, validationResult.Errors?.FirstOrDefault()?.ErrorMessage ?? "Invalid request.");
 
-            if (await _scheduleHandler.UpdateScheduleByIdAsync(request.ScheduleId, request.DoctorId, request.ScheduleTime, request.Price, ct) is var result && result is null || !result.Success)
+            if (await _scheduleService.UpdateScheduleByIdAsync(request.ScheduleId, request.DoctorId, request.ScheduleTime, request.Price, ct) is var result && result is null || !result.Success)
                 return Result.Fail(HttpStatusCode.UnprocessableContent, result.ErrorMessage);
 
             _logger.LogInformation($"{nameof(UpdateScheduleHandler)} finished.");

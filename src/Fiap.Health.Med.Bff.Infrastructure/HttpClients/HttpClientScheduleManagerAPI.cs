@@ -73,5 +73,47 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients
             else
                 return response;
         }
+
+        public async Task<CreateScheduleHttpResponse> CreateScheduleAsync(
+            string authorization,
+            int doctorId,
+            DateTime scheduleDate,
+            float schedulePrice,
+            CancellationToken ct)
+        {
+            (var response, var statusCode, var rawResponse) = await SendPostAsync<CreateScheduleHttpResponse>(
+                new
+                {
+                    DoctorId = doctorId,
+                    ScheduleTime = scheduleDate,
+                    Price = schedulePrice
+                },
+                $"api/Schedule",
+                authorization,
+                ct);
+
+            if (statusCode is HttpStatusCode.OK ||
+               statusCode is HttpStatusCode.NoContent ||
+               statusCode is HttpStatusCode.Created)
+            {
+                return new CreateScheduleHttpResponse
+                {
+                    IsSuccess = true
+                };
+            }
+            else if ((response is null || response.Errors is null || response.Errors.Count() == 0) &&
+                     !string.IsNullOrEmpty(rawResponse))
+            {
+                return new CreateScheduleHttpResponse
+                {
+                    IsSuccess = false,
+                    Errors = new List<string> { Regex.Replace(rawResponse, @"[{}\[\]\""]", string.Empty) }
+                };
+            }
+            else
+            {
+                return response;
+            }
+        }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.AcceptScheduleByDoctor.Models;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.CreateScheduleHandler.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.CreateScheduleHandler.Models;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Models;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Interfaces;
@@ -13,21 +15,33 @@ namespace Fiap.Health.Med.Bff.Api.Controller
     [Route("[Controller]")]
     public class ScheduleController : ControllerBase
     {
+        private readonly ICreateScheduleHandler _createScheduleHandler;
+        private readonly IUpdateScheduleHandler _updateScheduleHandler;
         private readonly IDeclineScheduleByDoctorHandler _declineScheduleByDoctorHandler;
         private readonly IAcceptScheduleByDoctorHandler _acceptScheduleByDoctorHandler;
-        private readonly IUpdateScheduleHandler _updateScheduleHandler;
 
         public ScheduleController(
+            ICreateScheduleHandler createScheduleHandler,
+            IUpdateScheduleHandler updateScheduleHandler,
             IDeclineScheduleByDoctorHandler declineScheduleByDoctorHandler,
-            IAcceptScheduleByDoctorHandler acceptScheduleByDoctorHandler,
-            IUpdateScheduleHandler updateScheduleHandler)
+            IAcceptScheduleByDoctorHandler acceptScheduleByDoctorHandler)
         {
+            _createScheduleHandler = createScheduleHandler;
+            _updateScheduleHandler = updateScheduleHandler;
             _declineScheduleByDoctorHandler = declineScheduleByDoctorHandler;
             _acceptScheduleByDoctorHandler = acceptScheduleByDoctorHandler;
-            _updateScheduleHandler = updateScheduleHandler;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateSchedule([FromBody] CreateScheduleHandlerRequest requestData, CancellationToken ct)
+        {
+            var result = await _createScheduleHandler.HandlerAsync(requestData, ct);
 
+            if (result.IsSuccess)
+                return StatusCode((int)result.StatusCode);
+
+            return StatusCode((int)result.StatusCode, result);
+        }
 
         [HttpPut("{scheduleId}/{doctorId}")]
         [Authorize]

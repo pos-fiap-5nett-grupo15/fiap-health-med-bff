@@ -68,11 +68,32 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.Services
                 return new BaseServiceResponse()
                 {
                     Success = false,
-                    ErrorMessage = result?.Errors.FirstOrDefault() ?? $"{nameof(AcceptScheduleByIdAsync)} - An error ocurred while communicate with Schedule Manager API."
+                    ErrorMessage = result?.Errors.FirstOrDefault() ?? $"{nameof(UpdateScheduleByIdAsync)} - An error ocurred while communicate with Schedule Manager API."
                 };
             }
 
             _logger.LogInformation($"{nameof(UpdateScheduleByIdAsync)} finished.");
+
+            return new BaseServiceResponse()
+            {
+                Success = true
+            };
+        }
+
+        public async Task<BaseServiceResponse> CreateScheduleAsync(int doctorId, DateTime scheduleTime, float price, CancellationToken ct)
+        {
+            _logger.LogInformation($"Starting {nameof(CreateScheduleAsync)}.");
+
+            if (await _scheduleManagerAPI.CreateScheduleAsync("authorization", doctorId, scheduleTime, price, ct) is var result && result is null || !result.IsSuccess)
+            {
+                return new BaseServiceResponse()
+                {
+                    Success = false,
+                    ErrorMessage = result?.Errors.FirstOrDefault() ?? $"{nameof(CreateScheduleAsync)} - An error ocurred while communicate with Schedule Manager API."
+                };
+            }
+
+            _logger.LogInformation($"{nameof(CreateScheduleAsync)} finished.");
 
             return new BaseServiceResponse()
             {
