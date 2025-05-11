@@ -166,5 +166,69 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.Services
                 Schedules = result.Schedules
             };
         }
+
+        public async Task<BaseServiceResponse> RequestScheduleToPatientAsync(long scheduleId, int patientId, CancellationToken ct)
+        {
+            _logger.LogInformation($"Starting {nameof(RequestScheduleToPatientAsync)}.");
+
+            if (await _scheduleManagerAPI.RequestScheduleToPatientAsync("authorization", scheduleId, patientId, ct) is var result && result is null || !result.IsSuccess)
+            {
+                return new BaseServiceResponse()
+                {
+                    Success = false,
+                    ErrorMessage = result?.Errors.FirstOrDefault() ?? $"{nameof(CreateScheduleAsync)} - An error ocurred while communicate with Schedule Manager API."
+                };
+            }
+
+            _logger.LogInformation($"{nameof(RequestScheduleToPatientAsync)} finished.");
+
+            return new BaseServiceResponse()
+            {
+                Success = true
+            };
+        }
+
+        public async Task<BaseServiceResponse> RequestPatientCancelScheduleAsync(long scheduleId, int patientId, string reason, CancellationToken ct)
+        {
+            _logger.LogInformation($"Starting {nameof(RequestPatientCancelScheduleAsync)}.");
+
+            if (await _scheduleManagerAPI.RequestPatientCancelScheduleAsync("authorization", scheduleId, patientId, reason, ct) is var result && result is null || !result.IsSuccess)
+            {
+                return new BaseServiceResponse()
+                {
+                    Success = false,
+                    ErrorMessage = result?.Errors.FirstOrDefault() ?? $"{nameof(CreateScheduleAsync)} - An error ocurred while communicate with Schedule Manager API."
+                };
+            }
+
+            _logger.LogInformation($"{nameof(RequestPatientCancelScheduleAsync)} finished.");
+
+            return new BaseServiceResponse()
+            {
+                Success = true
+            };
+        }
+
+        public async Task<GetScheduleServiceResponse> GetAllSchedulesAsync(CancellationToken ct)
+        {
+            _logger.LogInformation($"Starting {nameof(GetAllSchedulesAsync)}.");
+
+            if (await _scheduleManagerAPI.GetAllSchedulesAsync("authorization", ct) is var result && result is null || !result.IsSuccess)
+            {
+                return new GetScheduleServiceResponse()
+                {
+                    Success = false,
+                    ErrorMessage = result?.Errors.FirstOrDefault() ?? $"{nameof(GetAllSchedulesAsync)} - An error ocurred while communicate with Schedule Manager API."
+                };
+            }
+
+            _logger.LogInformation($"{nameof(GetAllSchedulesAsync)} finished.");
+
+            return new GetScheduleServiceResponse()
+            {
+                Success = true,
+                Schedules = result.Schedules
+            };
+        }
     }
 }

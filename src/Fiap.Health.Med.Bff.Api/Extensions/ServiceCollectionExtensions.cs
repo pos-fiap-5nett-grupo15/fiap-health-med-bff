@@ -17,6 +17,12 @@ using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.GetSchedule;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.GetSchedule.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.RequestPatientCancelSchedule;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.RequestPatientCancelSchedule.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.RequestPatientCancelSchedule.Models;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.RequestPatientCancelSchedule.Validators;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.RequestScheduleToPatient;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.RequestScheduleToPatient.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Models;
@@ -26,6 +32,7 @@ using Fiap.Health.Med.Bff.Application.Interfaces.Doctor;
 using Fiap.Health.Med.Bff.Application.Interfaces.Patient;
 using Fiap.Health.Med.Bff.CrossCutting.Settings;
 using Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients;
+using Fiap.Health.Med.Bff.Infrastructure.Http.HttpResponse;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Services;
 using Fiap.Health.Med.Bff.Infrastructure.Http.Settings;
@@ -130,7 +137,10 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
                 .AddScoped<ICreateScheduleHandler, CreateScheduleHandler>()
                 .AddScoped<IGetScheduleByIdHandler, GetScheduleByIdHandler>()
                 .AddScoped<IGetScheduleByDoctorIdHandler, GetScheduleByDoctorIdHandler>()
-                .AddScoped<IGetScheduleByPatientIdHandler, GetScheduleByPatientIdHandler>();
+                .AddScoped<IGetScheduleByPatientIdHandler, GetScheduleByPatientIdHandler>()
+                .AddScoped<IRequestScheduleToPatientHandler, RequestScheduleToPatientHandler>()
+                .AddScoped<IRequestPatientCancelScheduleHandler, RequestPatientCancelScheduleHandler>()
+                .AddScoped<IGetAllSchedulesHandler, GetAllSchedulesHandler>();
             return services;
         }
 
@@ -140,7 +150,8 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
                 .AddSingleton<IValidator<DeletePatientByIdHandlerRequest>, DeletePatientByIdHandlerValidator>()
                 .AddSingleton<IValidator<UpdatePatientByIdHandlerRequest>, UpdatePatientByIdHandlerValidator>()
                 .AddSingleton<IValidator<UpdateScheduleHandlerRequest>, UpdateScheduleHandlerValidator>()
-                .AddSingleton<IValidator<CreateScheduleHandlerRequest>, CreateScheduleHandlerValidator>();
+                .AddSingleton<IValidator<CreateScheduleHandlerRequest>, CreateScheduleHandlerValidator>()
+                .AddSingleton<IValidator<RequestPatientCancelScheduleHandlerRequest>, RequestPatientCancelScheduleHandlerValidator>();
             return services;
         }
 
