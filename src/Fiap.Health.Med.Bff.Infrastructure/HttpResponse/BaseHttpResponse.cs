@@ -1,4 +1,4 @@
-using System.Net;
+﻿using System.Net;
 
 namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpResponse
 {

@@ -50,7 +50,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPut("{id}")]
-        [Authorize(AuthenticationSchemes = nameof(EUserType.Doctor))]
+        [Authorize(Roles = nameof(EUserType.Doctor))]
         public async Task<IActionResult> PutDoctor(int id, DoctorRequestDto requestData)
         {
             if (!ModelState.IsValid)
@@ -65,7 +65,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = nameof(EUserType.Doctor))]
+        [Authorize(Roles = nameof(EUserType.Doctor))]
         public async Task<IActionResult> DeleteDoctor(int id)
         {
             if (!ModelState.IsValid)
@@ -80,7 +80,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpGet("filters")]
-        //[Authorize(Roles = nameof(EUserType.Patient))] TODO: Descomentar antes de entregar a versão final
+        [Authorize]
         public async Task<IActionResult> GetDoctorsByFiltersAsync(
             [FromQuery] string? doctorName,
             [FromQuery] Fiap.Health.Med.Bff.Domain.Enums.EMedicalSpecialty? doctorSpecialty,

@@ -4,6 +4,10 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces
 {
     public interface IHttpClientScheduleManagerAPI
     {
+        Task<GetScheduleHttpResponse> GetAllSchedulesAsync(
+            string authorization,
+            CancellationToken ct);
+
         Task<GetScheduleHttpResponse> GetScheduleByIdAsync(
             string authorization,
             long scheduleId,
@@ -43,5 +47,18 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces
           long scheduleId,
           int doctorId,
           CancellationToken ct);
+
+        Task<RequestScheduleToPatientHttpResponse> RequestScheduleToPatientAsync(
+            string authorization,
+            long scheduleId,
+            int patientId,
+            CancellationToken ct);
+
+        Task<RequestPatientCancelScheduleHttpResponse> RequestPatientCancelScheduleAsync(
+            string authorization,
+            long scheduleId,
+            int patientId,
+            string cancelReason,
+            CancellationToken ct);
     }
 }

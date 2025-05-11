@@ -20,9 +20,27 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients
             int doctorId,
             CancellationToken ct)
         {
-            (var response, _) = await SendPatchAsync<DeclineScheduleByIdHttpResponse?>(null, $"api/Schedule/{scheduleId}/doctor/{doctorId}/decline", authorization, ct);
+            (var response, var statusCode, var rawResponse) = await SendPatchAsync<DeclineScheduleByIdHttpResponse?>(null, $"api/Schedule/{scheduleId}/doctor/{doctorId}/decline", authorization, ct);
 
-            return response;
+            if (statusCode is HttpStatusCode.OK ||
+                statusCode is HttpStatusCode.NoContent)
+            {
+                return new DeclineScheduleByIdHttpResponse
+                {
+                    IsSuccess = true
+                };
+            }
+            else if ((response is null || response.Errors is null || response.Errors.Count() == 0) &&
+                     !string.IsNullOrEmpty(rawResponse))
+            {
+                return new DeclineScheduleByIdHttpResponse
+                {
+                    IsSuccess = false,
+                    Errors = new List<string> { Regex.Replace(rawResponse, @"[{}\[\]\""]", string.Empty) }
+                };
+            }
+            else
+                return response;
         }
 
         public async Task<DeclineScheduleByIdHttpResponse?> AcceptScheduleByIdAsync(
@@ -31,9 +49,27 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients
           int doctorId,
           CancellationToken ct)
         {
-            (var response, _) = await SendPatchAsync<DeclineScheduleByIdHttpResponse?>(null, $"api/Schedule/{scheduleId}/doctor/{doctorId}/accept", authorization, ct);
+            (var response, var statusCode, var rawResponse) = await SendPatchAsync<DeclineScheduleByIdHttpResponse?>(null, $"api/Schedule/{scheduleId}/doctor/{doctorId}/accept", authorization, ct);
 
-            return response;
+            if (statusCode is HttpStatusCode.OK ||
+                statusCode is HttpStatusCode.NoContent)
+            {
+                return new DeclineScheduleByIdHttpResponse
+                {
+                    IsSuccess = true
+                };
+            }
+            else if ((response is null || response.Errors is null || response.Errors.Count() == 0) &&
+                     !string.IsNullOrEmpty(rawResponse))
+            {
+                return new DeclineScheduleByIdHttpResponse
+                {
+                    IsSuccess = false,
+                    Errors = new List<string> { Regex.Replace(rawResponse, @"[{}\[\]\""]", string.Empty) }
+                };
+            }
+            else
+                return response;
         }
 
         public async Task<UpdateScheduleHttpResponse?> UpdateScheduleByIdAsync(
@@ -193,6 +229,104 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpClients
             CancellationToken ct)
         {
             (var response, var statusCode, var rawResponse) = await SendGetAsync<IEnumerable<GetScheduleResponse>>($"api/Schedule/patient/{patientId}", authorization, ct);
+
+            if (statusCode is HttpStatusCode.OK ||
+                statusCode is HttpStatusCode.NoContent ||
+                statusCode is HttpStatusCode.Created ||
+                statusCode is HttpStatusCode.NotFound)
+            {
+                return new GetScheduleHttpResponse
+                {
+                    IsSuccess = true,
+                    Schedules = response is not null ? response : new List<GetScheduleResponse>()
+                };
+            }
+            else if (!string.IsNullOrEmpty(rawResponse))
+            {
+                return new GetScheduleHttpResponse
+                {
+                    IsSuccess = false,
+                    Errors = new List<string> { Regex.Replace(rawResponse, @"[{}\[\]\""]", string.Empty) }
+                };
+            }
+            else
+            {
+                return new GetScheduleHttpResponse
+                {
+                    IsSuccess = false
+                };
+            }
+        }
+
+        public async Task<RequestScheduleToPatientHttpResponse> RequestScheduleToPatientAsync(
+            string authorization,
+            long scheduleId,
+            int patientId,
+            CancellationToken ct)
+        {
+            (var response, var statusCode, var rawResponse) = await SendPostAsync<RequestScheduleToPatientHttpResponse?>(null, $"api/Schedule/{scheduleId}/patient/{patientId}/request-schedule", authorization, ct);
+
+            if (statusCode is HttpStatusCode.OK ||
+                statusCode is HttpStatusCode.NoContent)
+            {
+                return new RequestScheduleToPatientHttpResponse
+                {
+                    IsSuccess = true
+                };
+            }
+            else if ((response is null || response.Errors is null || response.Errors.Count() == 0) &&
+                     !string.IsNullOrEmpty(rawResponse))
+            {
+                return new RequestScheduleToPatientHttpResponse
+                {
+                    IsSuccess = false,
+                    Errors = new List<string> { Regex.Replace(rawResponse, @"[{}\[\]\""]", string.Empty) }
+                };
+            }
+            else
+                return response;
+        }
+
+        public async Task<RequestPatientCancelScheduleHttpResponse> RequestPatientCancelScheduleAsync(
+            string authorization,
+            long scheduleId,
+            int patientId,
+            string cancelReason,
+            CancellationToken ct)
+        {
+            (var response, var statusCode, var rawResponse) = await SendPatchAsync<RequestPatientCancelScheduleHttpResponse?>(
+                new
+                {
+                    Reason = cancelReason
+                },
+                $"api/Schedule/{scheduleId}/patient/{patientId}/cancel",
+                authorization,
+                ct);
+
+            if (statusCode is HttpStatusCode.OK ||
+                statusCode is HttpStatusCode.NoContent)
+            {
+                return new RequestPatientCancelScheduleHttpResponse
+                {
+                    IsSuccess = true
+                };
+            }
+            else if ((response is null || response.Errors is null || response.Errors.Count() == 0) &&
+                     !string.IsNullOrEmpty(rawResponse))
+            {
+                return new RequestPatientCancelScheduleHttpResponse
+                {
+                    IsSuccess = false,
+                    Errors = new List<string> { Regex.Replace(rawResponse, @"[{}\[\]\""]", string.Empty) }
+                };
+            }
+            else
+                return response;
+        }
+
+        public async Task<GetScheduleHttpResponse> GetAllSchedulesAsync(string authorization, CancellationToken ct)
+        {
+            (var response, var statusCode, var rawResponse) = await SendGetAsync<IEnumerable<GetScheduleResponse>>($"api/Schedule", authorization, ct);
 
             if (statusCode is HttpStatusCode.OK ||
                 statusCode is HttpStatusCode.NoContent ||
