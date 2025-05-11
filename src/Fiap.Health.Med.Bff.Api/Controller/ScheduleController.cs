@@ -59,7 +59,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpGet]
-        [Authorize]
+        // [Authorize]
         public async Task<IActionResult> GetAll(CancellationToken ct)
         {
             var result = await _getAllSchedulesHandler.HandlerAsync(ct);
