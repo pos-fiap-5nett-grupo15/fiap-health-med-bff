@@ -128,7 +128,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = nameof(EUserType.Doctor))]
+        [Authorize(Roles = nameof(EUserType.Doctor))]
         public async Task<IActionResult> CreateSchedule([FromBody] CreateScheduleHandlerRequest requestData, CancellationToken ct)
         {
             var result = await _createScheduleHandler.HandlerAsync(requestData, ct);
@@ -140,7 +140,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPut("{scheduleId}/doctor/{doctorId}/update")]
-        [Authorize(AuthenticationSchemes = nameof(EUserType.Doctor))]
+        [Authorize(Roles = nameof(EUserType.Doctor))]
         public async Task<IActionResult> UpdateSchedule(long scheduleId, int doctorId, [FromBody] UpdateScheduleHandlerRequest requestData, CancellationToken ct)
         {
             requestData.ScheduleId = scheduleId;
@@ -155,7 +155,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPatch("{scheduleId}/doctor/{doctorId}/decline")]
-        [Authorize(AuthenticationSchemes = nameof(EUserType.Doctor))]
+        [Authorize(Roles = nameof(EUserType.Doctor))]
         public async Task<IActionResult> DeclineScheduleAsync(
             [FromRoute] long scheduleId,
             [FromRoute] int doctorId,
@@ -176,7 +176,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPatch("{scheduleId}/doctor/{doctorId}/accept")]
-        [Authorize(AuthenticationSchemes = nameof(EUserType.Doctor))]
+        [Authorize(Roles = nameof(EUserType.Doctor))]
         public async Task<IActionResult> AcceptScheduleAsync(
             [FromRoute] long scheduleId,
             [FromRoute] int doctorId,
@@ -197,7 +197,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPatch("{scheduleId}/patient/{patientId}/request-schedule")]
-        [Authorize(AuthenticationSchemes = nameof(EUserType.Patient))]
+        [Authorize(Roles = nameof(EUserType.Patient))]
         public async Task<IActionResult> RequestPatientScheduleAsync(
             [FromRoute] long scheduleId,
             [FromRoute] int patientId,
@@ -212,7 +212,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPatch("{scheduleId}/patient/{patientId}/cancel")]
-        [Authorize(AuthenticationSchemes = nameof(EUserType.Patient))]
+        [Authorize(Roles = nameof(EUserType.Patient))]
         public async Task<IActionResult> RequestPatientCancelScheduleAsync(
             [FromRoute] long scheduleId,
             [FromRoute] int patientId,

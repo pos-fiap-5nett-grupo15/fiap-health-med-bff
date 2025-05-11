@@ -43,7 +43,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpDelete("{patientId}")]
-        [Authorize(AuthenticationSchemes = nameof(EUserType.Patient))]
+        [Authorize(Roles = nameof(EUserType.Patient))]
         public async Task<IActionResult> DeletePatientByIdAsync(
             [FromRoute] int patientId,
             CancellationToken ct)
@@ -62,7 +62,7 @@ namespace Fiap.Health.Med.Bff.Api.Controller
         }
 
         [HttpPut("{patientId}")]
-        //[Authorize(Roles = nameof(EUserType.Patient))] TODO: Descomentar antes de entregar a versão final
+        [Authorize(Roles = nameof(EUserType.Patient))]
         public async Task<IActionResult> UpdatePatientByIdAsync(
             [FromRoute] int patientId,
             [FromBody] UpdatePatientByIdRequestBody requestBody,
