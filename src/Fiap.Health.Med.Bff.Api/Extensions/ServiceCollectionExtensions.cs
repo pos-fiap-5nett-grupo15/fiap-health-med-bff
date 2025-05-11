@@ -143,13 +143,7 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
                 .AddScoped<IGetScheduleByPatientIdHandler, GetScheduleByPatientIdHandler>()
                 .AddScoped<IRequestScheduleToPatientHandler, RequestScheduleToPatientHandler>()
                 .AddScoped<IRequestPatientCancelScheduleHandler, RequestPatientCancelScheduleHandler>()
-                .AddScoped<IGetAllSchedulesHandler, GetAllSchedulesHandler>();
-                .AddScoped<IUpdatePatientByIdHandler, UpdatePatientByIdHandler>()
-                .AddScoped<IUpdateScheduleHandler, UpdateScheduleHandler>()
-                .AddScoped<ICreateScheduleHandler, CreateScheduleHandler>()
-                .AddScoped<IGetScheduleByIdHandler, GetScheduleByIdHandler>()
-                .AddScoped<IGetScheduleByDoctorIdHandler, GetScheduleByDoctorIdHandler>()
-                .AddScoped<IGetScheduleByPatientIdHandler, GetScheduleByPatientIdHandler>()
+                .AddScoped<IGetAllSchedulesHandler, GetAllSchedulesHandler>()
                 .AddScoped<IGetDoctorsByFiltersHandler, GetDoctorsByFiltersHandler>();
             return services;
         }
@@ -161,10 +155,7 @@ namespace Fiap.Health.Med.Bff.Api.Extensions
                 .AddSingleton<IValidator<UpdatePatientByIdHandlerRequest>, UpdatePatientByIdHandlerValidator>()
                 .AddSingleton<IValidator<UpdateScheduleHandlerRequest>, UpdateScheduleHandlerValidator>()
                 .AddSingleton<IValidator<CreateScheduleHandlerRequest>, CreateScheduleHandlerValidator>()
-                .AddSingleton<IValidator<RequestPatientCancelScheduleHandlerRequest>, RequestPatientCancelScheduleHandlerValidator>();
-                .AddSingleton<IValidator<UpdatePatientByIdHandlerRequest>, UpdatePatientByIdHandlerValidator>()
-                .AddSingleton<IValidator<UpdateScheduleHandlerRequest>, UpdateScheduleHandlerValidator>()
-                .AddSingleton<IValidator<CreateScheduleHandlerRequest>, CreateScheduleHandlerValidator>()
+                .AddSingleton<IValidator<RequestPatientCancelScheduleHandlerRequest>, RequestPatientCancelScheduleHandlerValidator>()
                 .AddSingleton<IValidator<GetDoctorsByFiltersHandlerRequest>, GetDoctorsByFiltersHandlerValidator>();
             return services;
         }

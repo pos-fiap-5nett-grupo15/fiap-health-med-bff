@@ -1,4 +1,5 @@
 ﻿using Fiap.Health.Med.Bff.Domain.Dtos;
+using Fiap.Health.Med.Bff.Infrastructure.Http.ServiceRequestResponse;
 
 namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpResponse
 {
