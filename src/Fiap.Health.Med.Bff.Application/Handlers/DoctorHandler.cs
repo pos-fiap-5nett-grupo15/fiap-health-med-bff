@@ -22,7 +22,8 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
 
         public async Task<HandlerResultDto> CreateNewDoctorAsync(DoctorRequestDto requestData)
         {
-            var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.GetEndpoint("Doctor_CreateAsync"),
+            var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.BaseURL,
+                                                              resourceUrl: "Doctor",
                                                               requestMethod: Method.Post,
                                                               requestBody: requestData);
 
@@ -37,9 +38,9 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
 
         public async Task<HandlerResultDto?> DeleteDoctorAsync(int id)
         {
-            var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.GetEndpoint("Doctor_DeleteAsync"),
-                                                                                                requestMethod: Method.Delete,
-                                                                                                resourceUrl: $"{id}");
+            var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.BaseURL,
+                                                              resourceUrl: $"Doctor/{id}",
+                                                              requestMethod: Method.Delete);
 
             return new HandlerResultDto()
             {
@@ -52,9 +53,9 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
 
         public async Task<HandlerResultDto?> GetByIdDoctor(int id)
         {
-            var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.GetEndpoint("Doctor_GetOneAsync"),
-                                                                                                requestMethod: Method.Get,
-                                                                                                resourceUrl: $"{id}");
+            var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.BaseURL,
+                                                              requestMethod: Method.Get,
+                                                              resourceUrl: $"Doctor/{id}");
 
             return new HandlerResultDto()
             {
@@ -67,18 +68,18 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
 
         public async Task<UserSearchResponseDto?> GetDoctorByConcilAsync(string uf, int crm)
         {
-            var userSearchResponse = await _apiClient.ExecuteRequestAsync<UserSearchResponseDto>(baseUrl: _extenalApiSettings.UserService.GetEndpoint("Doctor_GetOneByConcilAsync"),
+            var userSearchResponse = await _apiClient.ExecuteRequestAsync<UserSearchResponseDto>(baseUrl: _extenalApiSettings.UserService.BaseURL,
                                                                                                  requestMethod: Method.Get,
-                                                                                                 resourceUrl: $"{uf}/{crm}");
+                                                                                                 resourceUrl: $"Doctor/{uf}/{crm}");
 
             return userSearchResponse.Data;
         }
 
         public async Task<HandlerResultDto> PutDoctorAsync(int id, DoctorRequestDto requestData)
         {
-            var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.GetEndpoint("Doctor_PutAsync"),
-                                                                                                 requestMethod: Method.Put,
-                                                                                                 resourceUrl: $"{id}", requestData);
+            var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.BaseURL,
+                                                              requestMethod: Method.Put,
+                                                              resourceUrl: $"Doctor/{id}", requestData);
 
             return new HandlerResultDto()
             {
