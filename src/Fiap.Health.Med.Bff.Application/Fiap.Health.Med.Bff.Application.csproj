@@ -22,6 +22,7 @@
 		<ProjectReference Include="..\Fiap.Health.Med.Bff.CrossCutting\Fiap.Health.Med.Bff.CrossCutting.csproj" />
 		<ProjectReference Include="..\Fiap.Health.Med.Bff.Domain\Fiap.Health.Med.Bff.Domain.csproj" />
 		<ProjectReference Include="..\Fiap.Health.Med.Bff.Infrastructure\Fiap.Health.Med.Bff.Infrastructure.Http.csproj" />
+		<ProjectReference Include="..\Fiap.Health.Med.Bff.Domain\Fiap.Health.Med.Bff.Domain.csproj" />
 	</ItemGroup>
 
 </Project>

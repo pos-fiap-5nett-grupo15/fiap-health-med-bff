@@ -14,5 +14,10 @@ namespace Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces
             int patientId,
             UpdatePatientByIdHttpRequest requestBody,
             CancellationToken ct);
+
+        Task<GetDoctorsByFiltersHttpResponse?> GetDoctorsByFiltersAsync(
+            string authorization,
+            GetDoctorsByFiltersHttpRequest requestBody,
+            CancellationToken ct);
     }
 }

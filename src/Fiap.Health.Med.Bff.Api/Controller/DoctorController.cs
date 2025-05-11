@@ -1,4 +1,6 @@
 ﻿using Fiap.Health.Med.Bff.Application.DTOs.Doctor;
+using Fiap.Health.Med.Bff.Application.Handlers.Doctor.GetDoctorsByFilters.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Doctor.GetDoctorsByFilters.Models;
 using Fiap.Health.Med.Bff.Application.Interfaces.Doctor;
 using Fiap.Health.Med.Bff.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -11,22 +13,14 @@ namespace Fiap.Health.Med.Bff.Api.Controller
     public class DoctorController : ControllerBase
     {
         private readonly IDoctorHandler _doctorHandler;
+        private readonly IGetDoctorsByFiltersHandler _getDoctorsByFiltersHandler;
 
-        public DoctorController(IDoctorHandler doctorHandler)
+        public DoctorController(
+            IDoctorHandler doctorHandler,
+            IGetDoctorsByFiltersHandler getDoctorsByFiltersHandler)
         {
             _doctorHandler = doctorHandler;
-        }
-
-        [HttpGet("list")]
-        [Authorize]
-        public async Task<IActionResult> GetAllDoctor()
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var result = await _doctorHandler.GetAllDoctorAsync();
-
-            return StatusCode((int)result.StatusCode, result.ResponseData);
+            _getDoctorsByFiltersHandler = getDoctorsByFiltersHandler;
         }
 
         [HttpGet("{id}")]
@@ -83,6 +77,32 @@ namespace Fiap.Health.Med.Bff.Api.Controller
             var result = await _doctorHandler.DeleteDoctorAsync(id);
 
             return StatusCode((int)result.StatusCode, result.ResponseData);
+        }
+
+        [HttpGet("filters")]
+        //[Authorize(Roles = nameof(EUserType.Patient))] TODO: Descomentar antes de entregar a versão final
+        public async Task<IActionResult> GetDoctorsByFiltersAsync(
+            [FromQuery] string? doctorName,
+            [FromQuery] Fiap.Health.Med.Bff.Domain.Enums.EMedicalSpecialty? doctorSpecialty,
+            [FromQuery] int? doctorDoncilNumber,
+            [FromQuery] string? doctorCrmUf,
+            [FromQuery] int? currentPage,
+            [FromQuery] int? pageSize,
+            CancellationToken ct)
+        {
+            var request = new GetDoctorsByFiltersHandlerRequest
+            {
+                DoctorCrmUf = doctorCrmUf,
+                DoctorDoncilNumber = doctorDoncilNumber,
+                DoctorName = doctorName,
+                DoctorSpecialty = doctorSpecialty,
+                CurrentPage = currentPage ?? 1,
+                PageSize = pageSize ?? 10
+            };
+
+            var result = await _getDoctorsByFiltersHandler.HandlerAsync(request, ct);
+
+            return StatusCode((int)result.StatusCode, result.Data);
         }
     }
 }

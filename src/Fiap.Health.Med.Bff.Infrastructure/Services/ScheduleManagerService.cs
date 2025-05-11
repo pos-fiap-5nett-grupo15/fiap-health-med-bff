@@ -1,5 +1,5 @@
-﻿using Fiap.Health.Med.Bff.Infrastructure.Http.HttpResponse;
-using Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces;
+﻿using Fiap.Health.Med.Bff.Infrastructure.Http.Interfaces;
+using Fiap.Health.Med.Bff.Infrastructure.Http.ServiceRequestResponse;
 using Microsoft.Extensions.Logging;
 
 namespace Fiap.Health.Med.Bff.Infrastructure.Http.Services

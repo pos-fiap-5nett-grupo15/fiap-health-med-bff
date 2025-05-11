@@ -1,4 +1,4 @@
-﻿namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpResponse
+﻿namespace Fiap.Health.Med.Bff.Infrastructure.Http.ServiceRequestResponse
 {
     public class BaseServiceResponse
     {

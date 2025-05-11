@@ -1,11 +1,6 @@
-﻿using System.Net;
-
-namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpResponse
+﻿namespace Fiap.Health.Med.Bff.Infrastructure.Http.HttpResponse
 {
-    public class UpdatePatientByIdHttpResponse
+    public class UpdatePatientByIdHttpResponse : BaseHttpResponse
     {
-        public bool IsSuccess { get; init; }
-        public HttpStatusCode StatusCode { get; init; }
-        public List<string> Errors { get; init; } = [];
     }
 }

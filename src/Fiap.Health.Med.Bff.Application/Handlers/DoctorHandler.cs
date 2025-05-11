@@ -50,21 +50,6 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
             };
         }
 
-        public async Task<HandlerResultDto?> GetAllDoctorAsync()
-        {
-            var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.GetEndpoint("Doctor_GetAllAsync"),
-                                                                                                 requestMethod: Method.Get,
-                                                                                                 resourceUrl: null);
-
-            return new HandlerResultDto()
-            {
-                StatusCode = result.StatusCode,
-                Success = result.IsSuccessful,
-                ResponseData = result.Content,
-                ErrorMessage = result.ErrorMessage
-            };
-        }
-
         public async Task<HandlerResultDto?> GetByIdDoctor(int id)
         {
             var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.GetEndpoint("Doctor_GetOneAsync"),

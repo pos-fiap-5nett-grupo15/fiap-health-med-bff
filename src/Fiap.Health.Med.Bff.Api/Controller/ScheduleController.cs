@@ -5,6 +5,9 @@ using Fiap.Health.Med.Bff.Application.Handlers.Schedule.CreateScheduleHandler.Mo
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.DeclineScheduleByDoctor.Models;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.GetSchedule.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Interfaces;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.UpdateSchedule.Models;
+using Fiap.Health.Med.Bff.Application.Handlers.Schedule.GetSchedule.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.RequestPatientCancelSchedule.Interfaces;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.RequestPatientCancelSchedule.Models;
 using Fiap.Health.Med.Bff.Application.Handlers.Schedule.RequestScheduleToPatient.Interfaces;

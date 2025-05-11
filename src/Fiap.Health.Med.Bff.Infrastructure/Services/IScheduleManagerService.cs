@@ -1,4 +1,4 @@
-﻿using Fiap.Health.Med.Bff.Infrastructure.Http.HttpResponse;
+﻿using Fiap.Health.Med.Bff.Infrastructure.Http.ServiceRequestResponse;
 
 namespace Fiap.Health.Med.Bff.Infrastructure.Http.Services
 {
