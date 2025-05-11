@@ -22,7 +22,8 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
 
         public async Task<HandlerResultDto> CreateNewPatientAsync(CreateNewPatientRequestDto requestData)
         {
-            var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.GetEndpoint("Patient_CreateAsync"),
+            var result = await _apiClient.ExecuteRequestAsync(baseUrl: _extenalApiSettings.UserService.BaseURL,
+                                                              resourceUrl: "Patient",
                                                               requestMethod: Method.Post,
                                                               requestBody: requestData);
 
@@ -37,9 +38,9 @@ namespace Fiap.Health.Med.Bff.Application.Handlers
 
         public async Task<UserSearchResponseDto?> GetPatientByCpfAsync(int cpf)
         {
-            var userSearchResponse = await _apiClient.ExecuteRequestAsync<UserSearchResponseDto>(baseUrl: _extenalApiSettings.UserService.GetEndpoint("Patient_CreateAsync"),
-                                                                                     requestMethod: Method.Get,
-                                                                                     resourceUrl: $"{cpf}");
+            var userSearchResponse = await _apiClient.ExecuteRequestAsync<UserSearchResponseDto>(baseUrl: _extenalApiSettings.UserService.BaseURL,
+                                                                                                 requestMethod: Method.Get,
+                                                                                                 resourceUrl: $"Patient/Document/{cpf}");
 
             return userSearchResponse.Data;
         }
