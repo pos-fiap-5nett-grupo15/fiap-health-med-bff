@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Folder Include="Models\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BCrypt-Core" Version="2.0.0" />
+		<PackageReference Include="FluentValidation" Version="11.11.0" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.7.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Fiap.Health.Med.Bff.CrossCutting\Fiap.Health.Med.Bff.CrossCutting.csproj" />
+		<ProjectReference Include="..\Fiap.Health.Med.Bff.Domain\Fiap.Health.Med.Bff.Domain.csproj" />
+		<ProjectReference Include="..\Fiap.Health.Med.Bff.Infrastructure\Fiap.Health.Med.Bff.Infrastructure.Http.csproj" />
+		<ProjectReference Include="..\Fiap.Health.Med.Bff.Domain\Fiap.Health.Med.Bff.Domain.csproj" />
+	</ItemGroup>
+
+</Project>
