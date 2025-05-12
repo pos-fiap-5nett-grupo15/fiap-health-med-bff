@@ -8,8 +8,8 @@ export default function () {
         'Content-Type': 'application/json',
     };
     let basePathAPI = 'http://135.237.26.77/';
-    let resourcePath = 'Doctor/';
-    let doctorId = 1;
+    let resourcePath = 'Schedule/doctor/';
+    let doctorId = 5;
     const res = http.get(`${basePathAPI}${resourcePath}${doctorId}`, { headers });
 
     if (
@@ -18,7 +18,7 @@ export default function () {
             //'tempo de resposta < 500ms': (r) => r.timings.duration < 500,
         })
     ) {
-        fail(`get-doctor-by-id - K6 Check - Fail: status code recebido - ${res.status}`);
+        fail(`get-schedule-by-doctor-id - K6 Check - Fail: status code recebido - ${res.status}`);
     }
 
     sleep(1); // pausa de 1s entre as execuções

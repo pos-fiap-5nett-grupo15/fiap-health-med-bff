@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fiap.Health.Med.Bff.LoadTests", "Fiap.Health.Med.Bff.LoadTests.csproj", "{F51A0E6A-868C-7D39-3C74-EC78AD989DB3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F51A0E6A-868C-7D39-3C74-EC78AD989DB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F51A0E6A-868C-7D39-3C74-EC78AD989DB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F51A0E6A-868C-7D39-3C74-EC78AD989DB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F51A0E6A-868C-7D39-3C74-EC78AD989DB3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6698E277-0D97-47B4-85F5-844171D9D5FA}
+	EndGlobalSection
+EndGlobal
