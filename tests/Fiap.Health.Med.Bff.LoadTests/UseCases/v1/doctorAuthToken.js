@@ -1,0 +1,1 @@
+﻿export const doctorAuthToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InJqNzc3Iiwicm9sZSI6IkRvY3RvciIsIm5iZiI6MTc0NzAxMDYyOCwiZXhwIjoxNzQ3MDEwOTI4LCJpYXQiOjE3NDcwMTA2Mjh9.PcO-Ff7pg5zlkS4QxBriSOVjX8Lu5YroPDxViP_9GSw';

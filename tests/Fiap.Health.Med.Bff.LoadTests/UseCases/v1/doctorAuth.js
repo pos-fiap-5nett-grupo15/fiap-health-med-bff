@@ -1,2 +1,0 @@
-﻿
-export let options = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InJqNzc3Iiwicm9sZSI6IkRvY3RvciIsIm5iZiI6MTc0NzAwNzM5NiwiZXhwIjoxNzQ3MDA3Njk2LCJpYXQiOjE3NDcwMDczOTZ9.9-w4i_393hCYV7RAs2miu1CxELIa72R3iQ7IRncn9o0';
